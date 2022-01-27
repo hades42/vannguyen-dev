@@ -1,14 +1,14 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import Layout from '../components/layout/main'
+import { ChakraProvider } from '@chakra-ui/react';
+import Main from '../components/layout/main';
 
 const Website = ({ Component, pageProps, router }) => {
   return (
     <ChakraProvider>
-      <Layout router={router}>
+      <Main router={router}>
         <Component {...pageProps} key={router.route} />
-      </Layout>
+      </Main>
     </ChakraProvider>
-  )
-}
+  );
+};
 
-export default Website
+export default Website;

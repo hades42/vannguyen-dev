@@ -104,16 +104,16 @@ const Page = () => {
 
       <Section delay={0.3}>
         <Heading as="h3" variant="section-title">
-          My hobby
+          I love
         </Heading>
         <Paragraph>
-          I like playing video game (puzzle and rogue-like), listening to music
+          Playing video game (puzzle and rogue-like), listening to music
           (Lo-fi), reading book (specially sci-fi), doing programming challenge
           (like{' '}
           <Reference path="https://atcoder.jp/users/Poseidon42">
             Competitive Programming <ExternalLinkIcon></ExternalLinkIcon>
           </Reference>
-          )
+          ) and learning about the computer
         </Paragraph>
       </Section>
     </Container>

@@ -9,7 +9,12 @@ const Paragraph = styled.p`
 
 const Reference = ({ children, path }) => {
   return (
-    <Link href={path} isExternal color={useColorModeValue('purple', 'orange')}>
+    <Link
+      href={path}
+      isExternal
+      fontWeight="bold"
+      color={useColorModeValue('purple', 'orange.200')}
+    >
       {children}
     </Link>
   );

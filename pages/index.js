@@ -1,9 +1,24 @@
-import { Container, Box, Heading, Image } from '@chakra-ui/react';
+import {
+  Container,
+  Box,
+  Heading,
+  Image,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import Section from '../components/section';
+import { Paragraph, Reference } from '../components/paragraph';
 
 const Page = () => {
   return (
     <Container>
-      <Box borderRadius="lg" bg="red" p={3} mb={6} align="center">
+      <Box
+        borderRadius="lg"
+        bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+        p={3}
+        mb={6}
+        mt={4}
+        align="center"
+      >
         Hi, I'm just a geek who love making software
       </Box>
 
@@ -12,7 +27,7 @@ const Page = () => {
           <Heading as="h2" variant="page-title">
             Van Nguyen Nguyen
           </Heading>
-          <p>Software Engineering (Developer / Designer)</p>
+          <p>Software Engineer (Developer / Designer)</p>
         </Box>
         <Box
           flexShrink={0}
@@ -33,6 +48,22 @@ const Page = () => {
           ></Image>
         </Box>
       </Box>
+
+      <Section delay={0.1}>
+        <Heading as="h3" variant="section-title">
+          Projects
+        </Heading>
+        <Paragraph>
+          I am currently a student at Macquarie University who is majoring in
+          Information Technology and have a huge passion for building software
+          to solve some real-life problems. I also enjoy spending time on
+          joining coding competition with my friends like Hackathon or{' '}
+          <Reference path="https://atcoder.jp/users/Poseidon42">
+            Competitive Programming
+          </Reference>{' '}
+          during my free times from Uni.
+        </Paragraph>
+      </Section>
     </Container>
   );
 };

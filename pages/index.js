@@ -4,9 +4,15 @@ import {
   Heading,
   Image,
   useColorModeValue,
+  Button,
+  VStack,
+  HStack,
 } from '@chakra-ui/react';
 import Section from '../components/section';
 import { Paragraph, Reference } from '../components/paragraph';
+import { ExternalLinkIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import NextLink from 'next/link';
+import { BioYear, BioSection, BioDesc } from '../components/bio';
 
 const Page = () => {
   return (
@@ -51,7 +57,7 @@ const Page = () => {
 
       <Section delay={0.1}>
         <Heading as="h3" variant="section-title">
-          Projects
+          About Me
         </Heading>
         <Paragraph>
           I am currently a student at Macquarie University who is majoring in
@@ -59,9 +65,55 @@ const Page = () => {
           to solve some real-life problems. I also enjoy spending time on
           joining coding competition with my friends like Hackathon or{' '}
           <Reference path="https://atcoder.jp/users/Poseidon42">
-            Competitive Programming
+            Competitive Programming (Atcoder{' '}
+            <ExternalLinkIcon></ExternalLinkIcon>)
           </Reference>{' '}
           during my free times from Uni.
+        </Paragraph>
+        <Box align="center" my={4}>
+          <NextLink href="/projects">
+            <Button
+              rightIcon={<ChevronRightIcon />}
+              colorScheme={useColorModeValue('purple', 'orange')}
+            >
+              My Projects
+            </Button>
+          </NextLink>
+        </Box>
+      </Section>
+
+      <Section delay={0.2}>
+        <Heading as="h3" variant="section-title">
+          Bio
+        </Heading>
+        <VStack alignItems="start">
+          <HStack w="100%" spacing={8}>
+            <BioYear w="20%">2000</BioYear>
+            <BioDesc>I was born in Da Nang city, Viet Nam.</BioDesc>
+          </HStack>
+
+          <HStack w="100%" spacing={8}>
+            <BioYear w="20%">2019 - 2022</BioYear>
+            <BioDesc>
+              Go to Macquarie University for Bachelor of Information Technology
+              (current)
+            </BioDesc>
+          </HStack>
+        </VStack>
+      </Section>
+
+      <Section delay={0.3}>
+        <Heading as="h3" variant="section-title">
+          My hobby
+        </Heading>
+        <Paragraph>
+          I like playing video game (puzzle and rogue-like), listening to music
+          (Lo-fi), reading book (specially sci-fi), doing programming challenge
+          (like{' '}
+          <Reference path="https://atcoder.jp/users/Poseidon42">
+            Competitive Programming <ExternalLinkIcon></ExternalLinkIcon>
+          </Reference>
+          )
         </Paragraph>
       </Section>
     </Container>

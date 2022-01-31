@@ -10,7 +10,7 @@ const Footer = () => {
         Reserved.
       </Text>
       <Text>
-        Feel free to contribute to my{' '}
+        Feel free to contribute to the website on{' '}
         <Reference path="https://github.com/hades42/vannguyen-dev">
           <Icon as={IoLogoGithub} /> Github
         </Reference>{' '}

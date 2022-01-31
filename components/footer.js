@@ -14,7 +14,7 @@ const Footer = () => {
         <Reference path="https://github.com/hades42/vannguyen-dev">
           <Icon as={IoLogoGithub} /> Github
         </Reference>{' '}
-        if you see something go wrong on the website
+        if you see something go wrong
       </Text>
     </Box>
   );

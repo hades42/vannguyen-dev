@@ -7,6 +7,12 @@ import {
   Button,
   VStack,
   HStack,
+  SimpleGrid,
+  ListItem,
+  List,
+  Link,
+  Icon,
+  Tooltip,
 } from '@chakra-ui/react';
 import Section from '../components/section';
 import { Paragraph, Reference } from '../components/paragraph';
@@ -14,8 +20,42 @@ import { ExternalLinkIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link';
 import { BioYear, BioDesc } from '../components/bio';
 import Layout from '../components/layout/article';
+import {
+  IoLogoGithub,
+  IoLogoLinkedin,
+  IoLogoTwitter,
+  IoLogoGoogle,
+} from 'react-icons/io5';
+import { GridItem } from '../components/grid-item';
+import { useState } from 'react';
 
 const Page = () => {
+  const [currLable, setCurrLable] = useState('Copy Email?');
+  const [activeCopy, setActiveCopy] = useState(false);
+
+  const copyToClipboard = e => {
+    const copyText = e.target.value;
+    var data = [
+      new ClipboardItem({
+        'text/plain': new Blob([copyText], { type: 'text/plain' }),
+      }),
+    ];
+    navigator.clipboard.write(data).then(
+      function () {
+        setCurrLable('Just Copied');
+        setActiveCopy(true);
+      },
+      function () {
+        setCurrLable('Something is wrong, please issue on my github');
+      }
+    );
+  };
+
+  const resetLable = () => {
+    setActiveCopy(false);
+    setCurrLable('Copy Email?');
+  };
+
   return (
     <Layout>
       <Container>
@@ -117,6 +157,71 @@ const Page = () => {
             </Reference>
             ) and learning about the computer
           </Paragraph>
+        </Section>
+
+        <Section delay={0.3}>
+          <Heading as="h3" variant="section-title">
+            I'm on the Internet
+          </Heading>
+          <List>
+            <ListItem>
+              <Link href="https://github.com/hades42" target="_blank">
+                <Button
+                  variant="ghost"
+                  color={useColorModeValue('purple', 'orange.200')}
+                  leftIcon={<Icon as={IoLogoGithub} />}
+                >
+                  @hades42
+                </Button>
+              </Link>
+            </ListItem>
+
+            <ListItem>
+              <Link href="https://twitter.com/NguynVn27052749" target="_blank">
+                <Button
+                  variant="ghost"
+                  color={useColorModeValue('purple', 'orange.200')}
+                  leftIcon={<Icon as={IoLogoTwitter} />}
+                >
+                  @Twitter (Van Nguyen Nguyen)
+                </Button>
+              </Link>
+            </ListItem>
+
+            <ListItem>
+              <Link
+                href="https://www.linkedin.com/in/van-nguyen-nguyen-031205178/"
+                target="_blank"
+              >
+                <Button
+                  variant="ghost"
+                  color={useColorModeValue('purple', 'orange.200')}
+                  leftIcon={<Icon as={IoLogoLinkedin} />}
+                >
+                  @LinkedIn (Van Nguyen Nguyen)
+                </Button>
+              </Link>
+            </ListItem>
+
+            <ListItem onMouseEnter={resetLable}>
+              <Tooltip
+                label={currLable}
+                bg={!activeCopy ? 'grassTeal' : 'green.500'}
+                placement="right-end"
+                closeOnClick={false}
+              >
+                <Button
+                  variant="ghost"
+                  color={useColorModeValue('purple', 'orange.200')}
+                  leftIcon={<Icon as={IoLogoGoogle} />}
+                  onClick={copyToClipboard}
+                  value="nguyenvannguyen.oc@gmail.com"
+                >
+                  nguyenvannguyen.oc@gmail.com
+                </Button>
+              </Tooltip>
+            </ListItem>
+          </List>
         </Section>
       </Container>
     </Layout>

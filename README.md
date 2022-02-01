@@ -5,7 +5,8 @@ Website: https://www.vannguyen-dev.com
 [NextJS](https://nextjs.org/)  
 [ChakraUI](https://chakra-ui.com/)  
 [ReactJS](https://reactjs.org/)  
-[Framer](https://www.framer.com)
+[Framer](https://www.framer.com)  
+[Vercel (current deployment)](https://vercel.com/)
 
 ## Current structure
 

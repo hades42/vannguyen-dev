@@ -7,7 +7,6 @@ import {
   Button,
   VStack,
   HStack,
-  SimpleGrid,
   ListItem,
   List,
   Link,
@@ -26,7 +25,6 @@ import {
   IoLogoTwitter,
   IoLogoGoogle,
 } from 'react-icons/io5';
-import { GridItem } from '../components/grid-item';
 import { useState } from 'react';
 
 const Page = () => {

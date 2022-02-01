@@ -49,7 +49,7 @@ Highly recommeding running **node** version >= 14.0
 
 ```
 ## Install node module and all the dev packages
-npm run install
+npm install
 
 ## Running website on local host (post 3000 by default)
 npm run dev

@@ -41,7 +41,7 @@ const theme = css`
   /* Code blocks */
   pre[class*='language-'] {
     padding: 1em;
-    margin: 0.5em 0;
+    margin: 1.5em 0;
     overflow: auto;
     border: 1px solid;
   }

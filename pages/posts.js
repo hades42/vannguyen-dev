@@ -3,7 +3,6 @@ import {
   Container,
   Heading,
   Text,
-  Box,
   Divider,
   useColorModeValue,
   LinkBox,
@@ -50,7 +49,7 @@ const Posts = ({ allPostsData }) => {
           Posts
         </Heading>
         {allPostsData.map(post => (
-          <SinglePost post={post} />
+          <SinglePost key={post.id} post={post} />
         ))}
       </Container>
     </Layout>

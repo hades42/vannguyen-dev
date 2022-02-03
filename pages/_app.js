@@ -15,6 +15,8 @@ import {
   MyLink,
   MyStrong,
   MyImage,
+  MyList,
+  MyHr,
 } from '../components/mdx/custom-component';
 
 const components = {
@@ -26,6 +28,8 @@ const components = {
   a: MyLink,
   strong: MyStrong,
   img: MyImage,
+  li: MyList,
+  hr: MyHr,
 };
 
 const CodeTheme = () => {

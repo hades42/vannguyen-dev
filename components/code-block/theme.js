@@ -47,7 +47,7 @@ const theme = css`
 
   :not(pre) > code[class*='language-'],
   pre[class*='language-'] {
-    background: #1d2021; /* bg0_h */
+    background: #1c1c1c; /* bg0_h */
   }
 
   /* Inline code */

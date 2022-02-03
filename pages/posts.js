@@ -29,7 +29,7 @@ const SinglePost = ({ post }) => (
           {post.title}
         </Heading>
         <Date dateString={post.date} />
-        <Text color={useColorModeValue('black', 'gray.300')}>
+        <Text color={useColorModeValue('black', 'gray.300')} marginTop="2">
           {post.summary}
         </Text>
       </LinkBox>

@@ -7,8 +7,26 @@ import { Global, css } from '@emotion/react';
 import { MDXProvider } from '@mdx-js/react';
 import CustomCode from '../components/code-block/codeblock';
 import codeTheme from '../components/code-block/theme';
+import {
+  MyH1,
+  MyH2,
+  MyH3,
+  MyH4,
+  MyLink,
+  MyStrong,
+  MyImage,
+} from '../components/mdx/custom-component';
 
-const components = { pre: CustomCode };
+const components = {
+  pre: CustomCode,
+  h1: MyH1,
+  h2: MyH2,
+  h3: MyH3,
+  h4: MyH4,
+  a: MyLink,
+  strong: MyStrong,
+  img: MyImage,
+};
 
 const CodeTheme = () => {
   return (

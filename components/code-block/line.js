@@ -4,7 +4,8 @@ export const Pre = styled.pre`
   margin: 1em 0;
   padding: 0.5em;
   overflow: scroll;
-  font-size: 14px;
+  font-size: 13px;
+  border-radius: 10px;
 `;
 
 export const Line = styled.div`

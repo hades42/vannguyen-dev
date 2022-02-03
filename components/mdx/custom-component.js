@@ -39,4 +39,13 @@ const MyImage = props => {
   );
 };
 
-export { MyH1, MyH4, MyH3, MyH2, MyLink, MyStrong, MyImage };
+const MyList = props => {
+  return <li style={{ marginLeft: '30px' }}>{props.children}</li>;
+};
+
+const MyHr = props => {
+  const color = useColorModeValue('black', '#4a4a49');
+  return <hr style={{ borderColor: `${color}`, margin: '50px 0' }} />;
+};
+
+export { MyH1, MyH4, MyH3, MyH2, MyLink, MyStrong, MyImage, MyList, MyHr };

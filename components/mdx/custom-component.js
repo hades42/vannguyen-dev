@@ -1,11 +1,11 @@
-import { Heading, Text, Box, Image, useColorModeValue } from '@chakra-ui/react';
+import { Heading, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import { Reference } from '../paragraph';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-const MyH1 = props => <Heading as="h1" size="xl" {...props} />;
-const MyH2 = props => <Heading as="h2" size="lg" {...props} />;
-const MyH3 = props => <Heading as="h3" size="md" {...props} />;
-const MyH4 = props => <Heading as="h4" size="sm" {...props} />;
+const MyH1 = props => <Heading as="h1" size="lg" {...props} />;
+const MyH2 = props => <Heading as="h2" size="md" {...props} />;
+const MyH3 = props => <Heading as="h3" size="sm" {...props} />;
+const MyH4 = props => <Heading as="h4" size="xs" {...props} />;
 
 const MyLink = props => {
   let content = props.children;

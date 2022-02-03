@@ -5,7 +5,7 @@ import Footer from '../footer';
 
 const Main = ({ children, router }) => {
   return (
-    <Box as="main" pb={8}>
+    <Box as="main">
       <Head>
         <link rel="icon" href="/images/favicon.ico"></link>
         <meta

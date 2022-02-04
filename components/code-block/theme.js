@@ -41,9 +41,11 @@ const theme = css`
   /* Code blocks */
   pre[class*='language-'] {
     padding: 1em;
-    margin: 1.5em 0;
+    margin: 0 0 1.5rem 0;
     overflow: auto;
-    border: 1px solid;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
   }
 
   :not(pre) > code[class*='language-'],

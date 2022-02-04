@@ -34,7 +34,18 @@ const TopFeature = ({ language, file, code }) => {
   };
 
   return (
-    <Box marginBottom="3">
+    <Box
+      borderTop="1px solid white"
+      borderLeft="1px solid white"
+      borderRight="1px solid white"
+      borderTopLeftRadius="10px"
+      borderTopRightRadius="10px"
+      bg="#1c1c1c"
+      paddingTop="2"
+      paddingLeft="2"
+      paddingRight="2"
+      marginTop="1.5rem"
+    >
       <Flex alignItems="center">
         <Box borderRadius="md" padding="1" bg="whiteAlpha.900">
           <Text

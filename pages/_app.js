@@ -1,3 +1,4 @@
+import '../lib/global.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import Main from '../components/layout/main';
 import theme from '../lib/theme';

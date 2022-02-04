@@ -29,27 +29,29 @@ const CustomCode = props => {
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <Pre className={className} style={style}>
+        <>
           <TopFeature
             language={language}
             file={file}
             code={props.children.props.children}
           />
-          {tokens.map((line, i) => (
-            <Line key={i} {...getLineProps({ line, key: i })}>
-              <LineNo>{i + 1}</LineNo>
-              <LineContent
-                style={{
-                  background: highlights(i + 1) ? '#2e2e2e' : 'transparent',
-                }}
-              >
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
-                ))}
-              </LineContent>
-            </Line>
-          ))}
-        </Pre>
+          <Pre className={className} style={style}>
+            {tokens.map((line, i) => (
+              <Line key={i} {...getLineProps({ line, key: i })}>
+                <LineNo>{i + 1}</LineNo>
+                <LineContent
+                  style={{
+                    background: highlights(i + 1) ? '#2e2e2e' : 'transparent',
+                  }}
+                >
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </LineContent>
+              </Line>
+            ))}
+          </Pre>
+        </>
       )}
     </Highlight>
   );

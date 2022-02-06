@@ -1,0 +1,1044 @@
+---
+title: "How to create a beautiful page with NextJS, MDX"
+date: "2022-02-05"
+summary: "In this post, I will show use how to create a page by using NextJS, MDX with custom tags (from heading, link, img, codeblock,...) in your own style"
+author: "Van Nguyen Nguyen"
+---
+
+If you are a developer, there is at least one time on your dev journey that you did come across
+some beautiful codeblock with nice custom theme color, showing proper line, color syntax, showing
+name file type,... And you also want to make the same thing. In this post, I will show you everything
+I know about how to make a custom digital blog by MDX.
+
+![This is a codeblock on MDX website](/images/How-to-create-a-beautiful-MDX/codeblock.png)
+
+---
+
+# Prerequisites
+
+1. You **have to** be somewhat familiar with NextJS. If you have not tried NextJS before, I highly
+recommend you to follow [NextJS tutorial](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=nav-cta&utm_campaign=next-website) 
+from their official website (since they explained everything quite clearly and help you create 
+a small website with it).
+<br/>
+
+2. About styling, I'm using ChakraUI to style my website but I will not recommend you to follow 
+the same strategy. Instead, I suggest you to use CSS framework (or even pure CSS) that you are good
+at currently. I will try as much as I can to explain what the property of each ChakraUI component so 
+you can apply same idea.
+
+3. About MDX, I highly recommend you to follow checkout their [Getting started page](https://mdxjs.com/docs/getting-started/),
+there may be many integrations process with other framework that you have not heard of, but let just 
+focus on their NextJS section for now. Then reading the page [Using MDX](https://mdxjs.com/docs/using-mdx/) 
+to have some ideas how they use MDX, you could go ahead and try out MDX with NextJS first since you already
+have some idea how to generation page in NextJS from section 1.
+
+<br/>
+
+If something goes wrong, please refer to this [repo](https://github.com/hades42/nextjs-blog) for more
+information or you could make an issue in my [main website repo](https://github.com/hades42/vannguyen-dev) for more clarification so I can improve
+the content.
+
+## Installation and Configuration
+
+
+There are some packages that you will need you to install before hand. I will explain what is the 
+purpose for each of them:
+
+* [mdx-js/loader](https://www.npmjs.com/package/@mdx-js/loader). This is webpack version of MDX that help 
+you to load MDX (you can imagine it is like a compiler to translate MDX to HTML structure). If your intention is to
+use MDX directly in the `page` directory of NextJS, you have to install this package since this is the **requirement** for 
+MDX. There is other option which I am currently using is that I totally separate the contents out of the `page` folder and
+using `next-mdx-remote` (which I will introduce below) to fetch the content for `getStaticProps`. 
+Config your `next.config.js` (If you just want to put the contents in the `page` folder for nextjs to automatically render them):
+
+```javascript
+module.exports = {
+  reactStrictMode: true,
+
+  // Prefer loading of ES Modules over CommonJS
+  experimental: { esmExternals: true },
+  // Support MDX files as pages:
+  pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
+  // Support loading `.md`, `.mdx`:
+  webpack(config, options) {
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: [
+        // The default `babel-loader` used by Next:
+        options.defaultLoaders.babel,
+        {
+          loader: '@mdx-js/loader',
+          /** @type {import('@mdx-js/loader').Options} */
+          options: {
+            /* jsxImportSource: …, otherOptions… */
+          },
+        },
+      ],
+    });
+
+    return config;
+  },
+};
+```
+
+
+* [date-fns](https://date-fns.org/). This is totally **optional**, you do not need to install this since it
+is just a tool to format the date for meta-data. 
+* [gray-matter](https://github.com/jonschlinkert/gray-matter). This is also **optional**, it is similar to YAML key/value
+that help you to have some extra data (meta-data) in your mdx. Example (the highlight parts is meta-data): 
+
+```markdown highlights=1-3
+author: Van Nguyen Nguyen
+date: "2022-02-05"
+summary: "Something"
+
+---
+
+Your content go here
+```
+* [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote). If you do not want to use `mdx-js/loader` and want the
+fetching content outside, this is a **requirement** since this package will allow your MDX to be loaded within getStaticProps or getServerSideProps (you should know these things by now) 
+from NextJS. There is are some alternative for this: [mdx-bundler](https://github.com/kentcdodds/mdx-bundler) and 
+the one from NextJS themself [next-mdx](https://nextjs.org/docs/advanced-features/using-mdx#nextmdx). I will point 
+out the pros and cons of them later.
+
+* [prism-react-renderer](https://github.com/FormidableLabs/prism-react-renderer). This is the package that help
+you to custom your codeblock. This a **recommendation** because there are mutiple package out there to do the 
+same things. I will explain the logic later.
+
+* [mdx-js/react](https://mdxjs.com/packages/react/). This package will provide the `MDXProvider` for you
+to pass the custom components
+
+# Create custom tags for the page
+
+## Set up fundamental logic for rendering MDX
+
+First, we need some content for the website. I highly recommend you to use web tutorial project from NextJS
+that you already finished beforehand. Then we can create a folder with a MDX file at the root level:
+
+```markdown file=try-mdx/test.mdx
+---
+title: "This is for Trying MDX"
+date: "2020-01-02"
+summary: "This is the summary testing for MDX"
+---
+
+# Ahihi this is a custome Heading
+
+<Test>
+    <Something>Hello World </Something>
+</Test> 
+
+a [link](https://example.com), an ![image](./image.png), some *emphasis*,
+something **strong**, and finally a little `<div/>`.  
+**strong**
+
+```javascript file=testing.js highlights=1,2
+const test= 1;
+const funnyThing = () => {
+    console.log(test);
+}
+funnyThing()```
+
+```
+Now, we need to find the way to fetch the content of the MDX file. If you already completed
+the NextJS tutorial, you know that you can get the path and the content by applying the some logic
+but instead of getting file with `.md`, you will get the file with `.mdx`
+
+```javascript file=lib/posts.js
+import fs from 'fs';
+import path from 'path';
+// Using gray matter for getting metadata
+import matter from 'gray-matter';
+
+const postsDirectory = path.join(process.cwd(), '/try-mdx');
+
+export function getSortedPostsData() {
+  // Get file names under /posts
+  const fileNames = fs.readdirSync(postsDirectory);
+  const allPostsData = fileNames.map(fileName => {
+    const ext = fileName.split('.')[1];
+    // Remove ".mdx" from file name to get id
+    const id = fileName.replace(/\.mdx$/, '');
+
+    // Read markdown file as string
+    const fullPath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+    // Use gray-matter to parse the post metadata section
+    const matterResult = matter(fileContents);
+    // Combine the data with the id
+    return {
+      id,
+      ...matterResult.data,
+    };
+  });
+  // Sort posts by date
+  return allPostsData.sort(({ date: a }, { date: b }) => {
+    if (a < b) {
+      return 1;
+    } else if (a > b) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+}
+
+export function getAllPostIds() {
+  // Read all the filename in the directory path
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  // Filter out the ext, only need to get the name of the file
+  return fileNames.map(fileName => { return {
+      // Following routing rule of NextJS
+      params: {
+        id: fileName.replace(/\.mdx$/, ''),
+      },
+    };
+  });
+}
+
+export async function getPostData(id) {
+  // For each file name provided, we gonna file the path of the file
+  const fullPath = path.join(postsDirectory, `${id}.mdx`);
+  // Read the content in utf8 format
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+  //  Using gray-matter to get the content and that data
+  const { content, data } = matter(fileContents);
+
+  // provide what need to be rendered for static-file-generation
+  return {
+    id,
+    content,
+    ...data,
+  };
+}
+
+```
+From now, I assume that you understand about **Static Generation** as 
+well as **Dynamic Routing** (since these are fundamental topics that got covered
+in NextJS tutorial course) like how to use `getStaticPaths` and `getStaticProps`. 
+
+> **Note**: If you follow the `mdx-js/loader` approach, you can just create some `[filename].mdx` and see
+the magic happens, the content you write in the MDX file will be translated into HTML format. Do 
+not forget the config your `next.config.js` and install `mdx-js/loader`
+
+<br/>
+
+If you follow the `next-md-remote`, you **have to separate** your blog contents out of the `page/` 
+folder so NextJS will not render it. Then using dynamic route to fetch them. 
+
+```structure
+pages/
+...
+├── posts
+│   └── [id].js  // Dynamic Routing
+...
+
+```
+
+Inside `[id].js` file:
+
+```jsx file=pages/posts/[id].js 
+
+// Getting component from NextJS tutorial
+// Layout is just the wrapper with the styling width to move page to the center with 
+// some extra metadata
+import Layout from '../../components/layout';
+// Head component is add the title for the page
+import Head from 'next/head';
+// Date component from NextJS tutorial, basically it will format the date for you 
+// but you could just print a raw date string
+import Date from '../../components/date';
+
+// Function to get path and contents of the .mdx file (already mentioned above) 
+import { getAllPostIds, getPostData } from '../../lib/posts';
+
+// This is just come basic class for styling some tags 
+import utilStyles from '../../components/utils.module.css';
+
+// Two important function from next-mdx-remote that make the magic happens
+// serialize will help us to convert raw MDX file into object that will be passed
+to MDXRemote for rendering HTML on the page 
+import { serialize } from 'next-mdx-remote/serialize';
+// MDXRemote is the component for rendering data that get from serialize
+import { MDXRemote } from 'next-mdx-remote';
+
+export async function getStaticPaths() {
+
+  // Get all the unique path that we need( the name of the folder)
+  const paths = getAllPostIds();
+  return {
+    // Return the path
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  // Get the raw data of the MDX file according to the path that we get
+  // Including the metadata and the raw content
+  const postData = await getPostData(params.id);
+
+  // Translating the raw content into readable object by serialize
+  // I recommend you to console.log the value to see how they look like
+  const mdxSource = await serialize(postData.content, {
+    // next-mdx-remote also allow us to use remark and rehype plugin, reading MDX docs for more information
+    // I am currently not using any plugin, so the array will be empty.
+    mdxOptions: {
+      remarkPlugins: [],
+      rehypePlugins: [],
+    },
+  });
+  return {
+    // we only need 2 things from the props
+    // postData (we dont care about the content since that one we will get from the mdxSource)
+    // We care about getting the metadata here so that is why we still need to get postData
+    props: {
+      postData,
+      mdxSource,
+    },
+  };
+}
+
+export default function Post({ postData, mdxSource }) {
+  return (
+    <Layout>
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
+      <article>
+        <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+        <div className={utilStyles.lightText}>
+          <Date dateString={postData.date} />
+        </div>
+        // MDXRemote is the components to render the actual content, other components above is just for 
+        // metadata
+        <MDXRemote {...mdxSource} />
+      </article>
+    </Layout>
+  );
+}
+```
+You may want to ask *"hmm, why I have to use `next-remote-mdx` to set up everything like this?, instead I could 
+just use `mdx-js/loader` and let NextJS render my page automatically"*. Well, I choose to go this way 
+because I want to easily add more customization on the my page like having more components in my `<Post/>`. *"But hey,
+hasn't MDX allowed you to import new components already?"*. Yes, but controlling through JSX is always easier and better 
+.For example, you can have some logic right in the `<Post/>` component which is annoying to do in MDX.
+<br/>
+Your page will probably look like this.
+
+![Initial Setup](/images/How-to-create-a-beautiful-MDX/setup-page.png)
+
+## Styling your tags
+[MDX Docs](https://mdxjs.com/docs/using-mdx/#mdx-provider) actually show you the way to style your components through
+`MDXProvider` that come from `mdx-js/react` or other web framework as well. Let apply it to our NextJS app. 
+
+<br/>
+
+NextJS allow you to [custom App](https://nextjs.org/docs/advanced-features/custom-app), what does it benefit you for this case:
+* Inject additional data into pages (which allows us to wrap every new component and import new data, and these thing will got
+added to the whole website across multiple page).
+* Persisting layout between page change (which means you can wrap the whole app by custom component these new component will be
+applied globally).
+* Add global CSS (which allow you to apply the color theme for your code block).
+
+<br/>
+
+Create a `customHeading.js` in your `components` folder 
+
+```structure
+components/
+├── customHeading.js
+├── ... 
+```
+
+Inside `customHeading.js`
+
+```jsx file=components/customHeading.js highlights=10
+
+//This is custom h1 tag = '#'
+const MyH1 = props => <h1 style={{ color: 'tomato' }} {...props} />;
+
+//This is custom h2 tag = '##'
+const MyH2 = props => <h2 style={{ color: 'yellow' }} {...props} />;
+
+
+//This is custom link tag = '[<name>](<url>)'
+const MyLink = props => {
+  console.log(props); // Will comeback to this line
+  let content = props.children;
+  let href = props.href;
+  return (
+    <a style={{ color: 'blue' }} href={href}>
+      {content}
+    </a>
+  );
+};
+
+const BoringComponent = () => {
+    return <p>I am so bored</p>
+}
+
+export { MyH1, MyH2, MyLink, BoringComponent };
+
+```
+
+Look at the code, you wonder *"Okay, but what is the variable `props` there?"*. I will explain the idea later.
+Now let get the custom components work first.
+
+<br/>
+
+Create a `_app.js` in your page folder or if you already had one, you do not need to create new
+one anymore
+
+```structure
+pages/
+...
+├── _app.js 
+...
+
+```
+
+Inside `_app.js`
+
+```jsx file=pages/_app.js highlights=19-26
+// You do not need to worry about these things
+// it just give you some extra global style for the page
+import '../styles/global.css';
+import '../src/theme/style.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../src/theme/test';
+
+// These are important line
+import { MyH1, MyH2, MyLink, BoringComponent } from '../components/CustomHeading';
+import { MDXProvider } from '@mdx-js/react';
+
+// MDXProvider accept object only
+const components = { h1: MyH1, h2: MyH2, a: MyLink, BoringComponent };
+
+export default function App({ Component, pageProps }) {
+  return (
+    // Do not worry about the <ChakraProvider/>, it just give you the global style
+    <ChakraProvider theme={theme}>
+        // Wrapping the <Component/> by <MDXProvider/> so everypage will get applied 
+        //the same thing
+      <MDXProvider components={components}>
+        // <Component/> is the feature of NextJS which identify the content of your 
+        // current page. <Component/> will change its pageProps to new page when you change to new
+        // page
+        <Component {...pageProps} />;
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+
+```
+Now you can see that the heading will turn into red because we are using `h1` if you are familiar
+with markdown and the `link` will turn into blue.
+
+<br/>
+
+Now let go back to the `props` variable before. If you scroll up, you can see I did `console.log(props)`.
+Let see what it is from the console
+
+![console.log(props)](/images/How-to-create-a-beautiful-MDX/props.png)
+
+If you know about ReactJS (I assume you did), if you pass any key value to a component, you can get
+it value through `props`. So MDX under the hood already parse the whole file to know which one
+is a link, image, heading, codeblock,... So you can get the value from there.
+
+<br/>
+
+To this point, you know how to MDX interact with its custom components by just getting information from the props and passed 
+it into the new custom components you can skip next explanation.
+
+### Simple explain MDXProvider
+
+```markdown
+
+import Random from 'somewhere'
+
+# Heading 
+
+<Random/>
+
+I feel bored
+```
+
+This is what we get when MDX translate the file into JSX
+
+```jsx
+import React from 'react'
+import { MDXTag } from '@mdx-js/tag'
+import MyComponent from './my-component'
+
+export default ({ components }) => (
+  <MDXTag name="wrapper" components={components}>
+    <MDXTag name="h1" components={components}>
+        Heading 
+    </MDXTag>
+    <Random />
+    <MDXTag name="p" components={components}>
+        I feel bored 
+    </MDXTag>
+  </MDXTag>
+)
+```
+
+We see that the exports default take a `components` from props. The `name` props of
+`MDXTag` will maps to a component defined in the `components` props. That why when we
+construct our components variable, we have to specify which tag this component mapping to.
+Or if you dont want to map anything but simply just for using it in MDX file, we do not need
+to specify any name tag.
+
+## Styling your codeblock
+
+This is probably the one that most people are waiting for. Let's walk through it together.
+
+<br/>
+
+Choosing your syntax highlight theme is quite important since it will make your codeblock more  
+readable. I personally using my favorite theme [GruvBox Dark](https://github.com/PrismJS/prism-themes/blob/master/themes/prism-gruvbox-dark.css).
+Or you can find more beautiful themes through this [repo](https://github.com/PrismJS/prism-themes). 
+
+<br/>
+
+My approach for this is that I will apply this syntax highlight theme globally, I do not want to change dynamically
+and I know the purpose of my website is just a small blog so there's no need to using multiple syntax highlighting colors.
+
+<br/>
+
+First put the code highlighting css somewhere. I recommend create a folder `styles/` in the root
+
+```structure
+styles/
+└── gruvBox.css
+...
+```
+
+Go to your `_app.js` and add the styling
+
+```jsx file=pages/_app.js highlights=10
+
+import '../styles/global.css';
+import '../src/theme/style.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../src/theme/test';
+
+import { MyH1, MyH2, MyLink, BoringComponent } from '../components/CustomHeading';
+import { MDXProvider } from '@mdx-js/react';
+
+// When you put the styling in _app.js the style will be applied across the whole website
+import '../styles/gruvBox.css';
+
+const components = { h1: MyH1, h2: MyH2, a: MyLink, BoringComponent };
+
+export default function App({ Component, pageProps }) {
+  return (
+    <ChakraProvider theme={theme}>
+      <MDXProvider components={components}>
+        <Component {...pageProps} />;
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+```
+
+*Wow, colour changed!!* Actually not quite, if you check your page right now, the color would be really weird. Let 
+me explain why. Firstly, this is what you get from the HTML structure on your page (you can just inspect from your
+own browser to check for the markup and styling). Just a whole string of code got cover by `<code/>` tag
+
+```markup
+<pre><code class="language-javascript" metastring="file=testing.js highlights=1,3-9" file="testing.js" highlights="1,3-9">
+"const ahihi = 1;
+export async function getStaticProps({ params }) {
+    const postData = await getPostData(params.id);
+    const mdxSource = await serialize(postData.content);
+    console.log(postData);
+    console.log(mdxSource);
+    return {
+        props: {
+            postData,
+            mdxSource,
+        },
+    };
+}"
+</code></pre>
+```
+And this is the only styling that got applied to that markup above
+
+```css
+
+code[class*="language-"], pre[class*="language-"] {
+    color: #ebdbb2;
+    font-family: Consolas, Monaco, "Andale Mono", monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+```
+But if you check your favorite syntax styling sheet, we have a lot of different things like: `token`,
+`comment`, `delimiter`, `operator`,... So where does all these things come from? Well they are  
+from the tokenize process for code. So you have to find some way to tokenize that string so 
+you will be able to apply those styling. [prism-react-renderer](https://github.com/FormidableLabs/prism-react-renderer)
+is going to be a great tool for this.
+
+<br/>
+
+If you go to their usage example, you can clearly see how we are going to use it. Since they already 
+provided a wrapper example for us, we just need to pass our content data.
+
+<br/>
+
+Create a `customCodeblock.js` in your `components/` folder
+
+```jsx file=components/customCodeblock.js highlights=38-41
+// I'm using styled components here since they also recommend using it but you can 
+// just create some custom class or applied style directly into the components like the 
+// React way.
+import styled from '@emotion/styled';
+// This is their provided components
+import Highlight, { defaultProps } from 'prism-react-renderer';
+
+// Custom <pre/> tag
+const Pre = styled.pre`
+  text-align: left;
+  margin: 1em 0;
+  padding: 0.5em;
+  overflow: scroll;
+  font-size: 14px;
+`;
+
+// Cutom <div/> (this is arrangement of the line)
+const Line = styled.div`
+  display: table-row;
+`;
+
+// Custom <span/> (this is for the Line number)
+const LineNo = styled.span`
+  display: table-cell;
+  text-align: right;
+  padding-right: 1em;
+  user-select: none;
+  opacity: 0.5;
+`;
+
+// Custom <span/> (this is for the content of the line)
+const LineContent = styled.span`
+  display: table-cell;
+`;
+
+
+const CustomCode = props => {
+  // Pay attention the console.log() when we applied this custom codeBlock into the
+  //_app.js. what metadata you are getting, is there anything you did not expect that actually
+  // appear. Can you try out some extra features by changing the MDX codeblock content
+  console.log(props);
+
+  // From the console.log() you will be able to guess what are these things.
+  const className = props.children.props.className || '';
+  const code = props.children.props.children.trim();
+  const language = className.replace(/language-/, '');
+
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={undefined}
+      code={code}
+      language={language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <Pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <Line key={i} {...getLineProps({ line, key: i })}>
+              <LineNo>{i + 1}</LineNo>
+              <LineContent>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
+              </LineContent>
+            </Line>
+          ))}
+        </Pre>
+      )}
+    </Highlight>
+  );
+};
+
+export default CustomCode;
+```
+
+Let apply this this `CustomCode` into your `MDXProvider` 
+
+```jsx file=pages/_app.js highlights=7,14 
+import '../styles/global.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../src/theme/test';
+import '../src/theme/style.css';
+import { MyH1, MyH2, MyLink } from '../components/CustomHeading';
+import { MDXProvider } from '@mdx-js/react';
+import CustomCode from '../components/customCode';
+import '../styles/gruvBox.css';
+
+const components = { 
+    h1: MyH1, 
+    h2: MyH2, 
+    a: MyLink, 
+    pre: CustomCode };
+
+export default function App({ Component, pageProps }) {
+  return (
+    <ChakraProvider theme={theme}>
+      <MDXProvider components={components}>
+        <Component {...pageProps} />;
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+```
+
+I hope you get what you want, the color should be as what you are expecting. 
+If there something wrong, please refer to [Prerequisites section](#Prerequisites
+) 
+
+<br/>
+
+> **Note**: `prism-react-renderer` actually provide you color theme, they did
+show you how to apply it in their docs, but they dont have GruvBox that why I have to find the GruvBox 
+style for global style to override their default color. If you are able to find your favorite theme in their 
+list, there is no need to add global style, you can remove it.
+
+### Create file name for you codeblock 
+I hope that you did check the `console.log(props)` from the your custom codeblock. This is
+what we see on in the console:
+
+![console.log(props) from the custom codeblock](/images/How-to-create-a-beautiful-MDX/console-code-block.png)
+
+There is some interesting props here: `file`, `highlights`, `metastring`. If you comeback to the content
+that I already gave in the beginning, there are some **extra key value** I put in the codeblock which for a usual
+markdown syntax, it is kind of useless. But this is MDX, MDX actually parses the codeblock and give us some metadata.
+From this data, we will be able to make some extra features. Let add the file name/path for it:
+
+```jsx file=components/customCodeblock.js highlights=25,36
+
+import styled from '@emotion/styled';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+
+const Pre = styled.pre`
+...
+`;
+
+const Line = styled.div`
+...
+`;
+
+const LineNo = styled.span`
+...
+`;
+
+const LineContent = styled.span`
+...
+`;
+
+const CustomCode = props => {
+  console.log(props);
+  const className = props.children.props.className || '';
+  const code = props.children.props.children.trim();
+  const language = className.replace(/language-/, '');
+  const file = props.children.props.file;
+
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={undefined}
+      code={code}
+      language={language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <>
+          <h2>{file}</h2>
+          <Pre className={className} style={style}>
+            {tokens.map((line, i) => (
+              <Line key={i} {...getLineProps({ line, key: i })}>
+                <LineNo>{i + 1}</LineNo>
+                <LineContent>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </LineContent>
+              </Line>
+            ))}
+          </Pre>
+        </>
+      )}
+    </Highlight>
+  );
+};
+
+export default CustomCode;
+
+```
+
+Your homework is styling that file name for your code block.
+
+### Create highlights for you codeblock 
+Now, if you look at the `highlights` metadata, you probably wonder what I am
+trying to accomplish here. My idea is simple:
+
+```
+if my highlights = 1,3-5
+I want the value I parse from this string to be like this [1, 3, 4, 5]
+
+if my highlights = 1,2,3 or 1-3
+I want the value I parse from this string to be like this [1, 2, 3]
+
+You get it right? the '-' will detect the range that I want to loop through.
+```
+Since we are able to get the `highlights` value now, we need to find the way to parse this string
+Let create `lib/parseRange.js` 
+
+```javascript file=lib/parseRange.js 
+
+function parsePart(string) {
+  // Array that contain the range result
+  let res = [];
+    
+  // we split the ',' and looping through every elemenet
+  for (let str of string.split(',').map(str => str.trim())) {
+    // Using regex to detect whether it is a number or a range
+    if (/^-?\d+$/.test(str)) {
+      res.push(parseInt(str, 10));
+    } else {
+       // If it is a range, we have to contruct that range
+      let split = str.split('-');
+      let start = split[0] - '0';
+      let end = split[1] - '0';
+      for (let i = start; i <= end; i++) {
+        res.push(i);
+      }
+    }
+  }
+  return res;
+}
+
+export default parsePart;
+```
+
+Let use this thing your `customCodeblock.js`:
+
+```jsx file=components/customCodeblock.js  highlights=4,25-32,41-44,58,61-65
+
+import styled from '@emotion/styled';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+// import your function
+import parsePart from '../lib/parseRange';
+
+const Pre = styled.pre`
+...
+`;
+
+const Line = styled.div`
+...
+`;
+
+const LineNo = styled.span`
+...
+`;
+
+const LineContent = styled.span`
+...
+`;
+
+// shouldHighlight will return a function to be called later
+// that function will return true or false depend on whether the index will appear
+// inside our parsed array
+const shouldHighlight = raw => {
+  const parsedRange = parsePart(raw);
+  if (parsedRange) {
+    return index => parsedRange.includes(index);
+  } else {
+    return () => false;
+  }
+};
+
+const CustomCode = props => {
+  console.log(props);
+  const className = props.children.props.className || '';
+  const code = props.children.props.children.trim();
+  const language = className.replace(/language-/, '');
+  const file = props.children.props.file;
+    
+  // Getting the raw range
+  const rawRange = props.children.props.highlights || '';
+  // assign the checking function
+  const highlights = shouldHighlight(rawRange);
+
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={undefined}
+      code={code}
+      language={language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <>
+          <h2>{file}</h2>
+          <Pre className={className} style={style}>
+            // Getting the index from the mapping line
+            {tokens.map((line, i) => (
+              <Line key={i} {...getLineProps({ line, key: i })}>
+                <LineNo>{i + 1}</LineNo>
+                <LineContent
+                  style={{
+                    background: highlights(i + 1) ? 'gray' : 'transparent',
+                  }}
+                >
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </LineContent>
+              </Line>
+            ))}
+          </Pre>
+        </>
+      )}
+    </Highlight>
+  );
+};
+
+export default CustomCode;
+```
+I hope you will get the highlight styling that you want. You now get the basic idea of how 
+to highlight line. Making it look better will be your homework.
+
+
+### Making a copy functionality for your codeblock
+
+We gonna utilize a web API called [Clipboard API](https://w3c.github.io/clipboard-api) to accomplish this. 
+I am not going to explain the mechanism since the main website does a way better job than me. You can check
+out their explainaion [here](https://w3c.github.io/clipboard-apis/#dom-clipboard-write)
+
+<br/>
+
+Let modify our `customCodeblock.js` 
+
+```jsx file=components/customCodeblock.js  highlights=2,29-50,70-74
+// useState to change the text of copy button 
+import { useState } from 'react';
+import styled from '@emotion/styled';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import parsePart from '../lib/parseRange';
+
+const Pre = styled.pre`
+...
+`;
+
+const Line = styled.div`
+...
+`;
+
+const LineNo = styled.span`
+...
+`;
+
+const LineContent = styled.span`
+...
+`;
+
+const shouldHighlight = raw => {
+    ...
+};
+
+const CustomCode = props => {
+
+  const [currLabel, setCurrLabel] = useState('Copy');
+
+  const copyToClibBoard = copyText => {
+    let data = [
+      new ClipboardItem({
+        'text/plain': new Blob([copyText], { type: 'text/plain' }),
+      }),
+    ];
+    navigator.clipboard.write(data).then(
+      function () {
+        setCurrLabel('Copied');
+        setTimeout(() => {
+          setCurrLabel('Copy');
+        }, 1000);
+      },
+      function () {
+        setCurrLabel(
+          'There are errors'
+        );
+      }
+    );
+  };
+
+  const className = props.children.props.className || '';
+  const code = props.children.props.children.trim();
+  const language = className.replace(/language-/, '');
+  const file = props.children.props.file;
+
+  const rawRange = props.children.props.highlights || '';
+  const highlights = shouldHighlight(rawRange);
+
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={undefined}
+      code={code}
+      language={language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <>
+          <h2>{file}</h2>
+          <button
+            onClick={() => copyToClibBoard(props.children.props.children)}
+          >
+            {currLabel}
+          </button>
+          <Pre className={className} style={style}>
+            {tokens.map((line, i) => (
+              <Line key={i} {...getLineProps({ line, key: i })}>
+                <LineNo>{i + 1}</LineNo>
+                <LineContent
+                  style={{
+                    background: highlights(i + 1) ? 'gray' : 'transparent',
+                  }}
+                >
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token, key })} />
+                  ))}
+                </LineContent>
+              </Line>
+            ))}
+          </Pre>
+        </>
+      )}
+    </Highlight>
+  );
+};
+
+export default CustomCode;
+
+```
+# Summary
+
+I hope you achieve what you are looking for when you reading my post. This is just some
+basic logic to automate custom tag for your website. Create as much custom components as possible 
+to fulfill your need, styling thing in your favorite color. And from now on you could just focus 
+on your content. Good luck on your dev journey
+

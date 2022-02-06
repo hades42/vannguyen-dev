@@ -6,6 +6,7 @@ Website: https://www.vannguyen-dev.com
 [ChakraUI](https://chakra-ui.com/)  
 [ReactJS](https://reactjs.org/)  
 [Framer](https://www.framer.com)  
+[MDX](https://mdxjs.com/)  
 [Vercel (current deployment)](https://vercel.com/)
 
 ## Current structure
@@ -14,34 +15,21 @@ Website: https://www.vannguyen-dev.com
 .
 ├── README.md
 ├── components                  // Containe all reusable components
-│   ├── bio.js
-│   ├── fonts.js
-│   ├── footer.js
-│   ├── grid-item.js
-│   ├── layout                  // Main layout for the website
-│   ├── logo.js
-│   ├── navbar.js
-│   ├── paragraph.js
-│   ├── project.js
-│   ├── section.js
-│   └── theme-toggle-button.js
+│   ├── layout/                 // Main layout for the website
+│   ├── mdx/                    // Custom features for MDX
+│   ├── code-block/             // Custom codeblock
+│   └── ...
 ├── eslintrc.json
-├── lib                         // Currently just for customized theme of Chakra UI
-│   └── theme.js
+├── lib                         // Theme, backend logic
 ├── next.config.js
 ├── package-lock.json
 ├── package.json
 ├── pages                       // Rendered Page for NextJS
-│   ├── 404.js
-│   ├── _app.js
-│   ├── _document.js
-│   ├── index.js
-│   ├── posts.js
-│   ├── projects                // Contain project pages
-│   └── projects.js
+│   ├── projects/               // Contain project pages
+│   ├── posts/                  // Contain posts pages
+│   └── ...
 ├── prettier.config.js
-└── public                      // Containes mostly images
-    └── images
+└── public                      // Containes static file
 ```
 
 ## Running
@@ -58,4 +46,4 @@ npm run dev
 
 ## License
 
-MIT © [Van Nguyen Nguyen](https://github.com/hades42)
+[MIT](https://github.com/hades42/vannguyen-dev/blob/main/LICENSE) © [Van Nguyen Nguyen](https://github.com/hades42)

@@ -15,7 +15,7 @@ const Main = ({ children, router }) => {
         <title>Van Nguyen Nguyen - Homepage</title>
       </Head>
       <Navbar path={router.asPath} />
-      <Container minH="100vh" maxW="container.md" pt={14}>
+      <Container minH="90vh" maxW="container.md" pt={14}>
         {children}
       </Container>
       <Footer />

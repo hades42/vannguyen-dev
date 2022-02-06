@@ -38,10 +38,18 @@ const CustomCode = props => {
           <Pre className={className} style={style}>
             {tokens.map((line, i) => (
               <Line key={i} {...getLineProps({ line, key: i })}>
-                <LineNo>{i + 1}</LineNo>
+                <LineNo
+                  style={{
+                    borderRight: highlights(i + 1) ? '3px solid #ffce47' : '',
+                    color: highlights(i + 1) && '#ffce47',
+                  }}
+                >
+                  {i + 1}
+                </LineNo>
                 <LineContent
                   style={{
                     background: highlights(i + 1) ? '#2e2e2e' : 'transparent',
+                    paddingLeft: '10px',
                   }}
                 >
                   {line.map((token, key) => (

@@ -51,7 +51,8 @@ const TopFeature = ({ language, file, code }) => {
           <Text
             as="span"
             fontSize={12}
-            textTransform="capitalize"
+            textTransform="uppercase"
+            fontWeight="bold"
             color="blackAlpha.900"
           >
             {language}

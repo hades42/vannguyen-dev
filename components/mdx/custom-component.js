@@ -29,10 +29,17 @@ const MyStrong = props => {
 const MyImage = props => {
   const src = props.src;
   const alt = props.alt;
+  const color = useColorModeValue('black.600', 'gray.400');
   return (
     <>
-      <Image marginY="3" borderRadius="md" src={src} alt={alt} />
-      <Text as="span" display="block" align="center" color="gray.400">
+      <Image marginY="3" borderRadius="md" src={src} alt={alt} marginX="auto" />
+      <Text
+        as="span"
+        marginBottom="2"
+        display="block"
+        align="center"
+        color={color}
+      >
         {alt}
       </Text>
     </>

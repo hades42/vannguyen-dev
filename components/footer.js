@@ -12,11 +12,11 @@ const Footer = () => {
       opacity={0.8}
       fontSize="sm"
     >
-      <Text color={useColorModeValue('white', 'orange')}>
+      <Text color="white">
         &copy; {new Date().getFullYear()} Van Nguyen Nguyen. All Rights
         Reserved.
       </Text>
-      <Text color={useColorModeValue('white', 'orange')}>
+      <Text color="white">
         Feel free to contribute to the website on{' '}
         <Reference path="https://github.com/hades42/vannguyen-dev">
           <Icon as={IoLogoGithub} /> Github

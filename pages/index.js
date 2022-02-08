@@ -20,12 +20,7 @@ import { ExternalLinkIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link';
 import { BioYear, BioDesc } from '../components/bio';
 import Layout from '../components/layout/article';
-import {
-  IoLogoGithub,
-  IoLogoLinkedin,
-  IoLogoTwitter,
-  IoLogoGoogle,
-} from 'react-icons/io5';
+import { IoLogoGithub, IoLogoLinkedin, IoLogoGoogle } from 'react-icons/io5';
 import { useState } from 'react';
 
 const Page = () => {

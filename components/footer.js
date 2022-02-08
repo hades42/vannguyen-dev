@@ -1,4 +1,4 @@
-import { Box, Text, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Icon, useColorModeValue, Link } from '@chakra-ui/react';
 import { Reference } from './paragraph';
 import { IoLogoGithub } from 'react-icons/io5';
 
@@ -22,6 +22,12 @@ const Footer = () => {
           <Icon as={IoLogoGithub} /> Github
         </Reference>{' '}
         if you see something go wrong
+      </Text>
+      <Text color="white">
+        Contanct me:{' '}
+        <Link fontWeight="bold" href="mailto:nguyenvannguyen.oc@gmail.com">
+          nguyenvannguyen.oc@gmail.com
+        </Link>
       </Text>
     </Box>
   );

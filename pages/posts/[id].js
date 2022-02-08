@@ -48,7 +48,9 @@ export default function Post({ postData, mdxSource }) {
           <Date dateString={postData.date} />
         </HStack>
       </Box>
-      <MDXRemote {...mdxSource} />
+      <div id="post-body">
+        <MDXRemote {...mdxSource} />
+      </div>
     </>
   );
 }

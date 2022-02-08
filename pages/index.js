@@ -12,6 +12,7 @@ import {
   Link,
   Icon,
   Tooltip,
+  Stack,
 } from '@chakra-ui/react';
 import Section from '../components/section';
 import { Paragraph, Reference } from '../components/paragraph';
@@ -110,16 +111,31 @@ const Page = () => {
             </Reference>{' '}
             during my free times from Uni.
           </Paragraph>
-          <Box align="center" my={4}>
-            <NextLink href="/projects">
-              <Button
-                rightIcon={<ChevronRightIcon />}
-                colorScheme={useColorModeValue('purple', 'orange')}
-              >
-                My Projects
-              </Button>
-            </NextLink>
-          </Box>
+          <Stack align="center" justify="center" direction={['column', 'row']}>
+            <Box>
+              <NextLink href="/posts">
+                <Button
+                  margin={['20px 0 0 0', '20px 10px 5px 0']}
+                  rightIcon={<ChevronRightIcon />}
+                  colorScheme={useColorModeValue('purple', 'orange')}
+                >
+                  My Posts
+                </Button>
+              </NextLink>
+            </Box>
+
+            <Box>
+              <NextLink href="/projects">
+                <Button
+                  margin={['10px 0 0 0', '20px 0 5px 10px']}
+                  rightIcon={<ChevronRightIcon />}
+                  colorScheme={useColorModeValue('purple', 'orange')}
+                >
+                  My Projects
+                </Button>
+              </NextLink>
+            </Box>
+          </Stack>
         </Section>
 
         <Section delay={0.2}>
@@ -170,18 +186,6 @@ const Page = () => {
                   leftIcon={<Icon as={IoLogoGithub} />}
                 >
                   @hades42
-                </Button>
-              </Link>
-            </ListItem>
-
-            <ListItem>
-              <Link href="https://twitter.com/NguynVn27052749" target="_blank">
-                <Button
-                  variant="ghost"
-                  color={useColorModeValue('purple', 'orange.200')}
-                  leftIcon={<Icon as={IoLogoTwitter} />}
-                >
-                  @Twitter (Van Nguyen Nguyen)
                 </Button>
               </Link>
             </ListItem>

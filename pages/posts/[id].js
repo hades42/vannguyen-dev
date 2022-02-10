@@ -77,7 +77,9 @@ export default function Post({ postData, mdxSource }) {
       </Box>
       <div id="post-body">
         <MDXProvider components={components}>
-          <MDXRemote {...mdxSource} />
+          <article>
+            <MDXRemote {...mdxSource} />
+          </article>
         </MDXProvider>
       </div>
     </>

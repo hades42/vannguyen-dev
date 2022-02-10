@@ -35,7 +35,7 @@ const SinglePost = ({ post }) => (
     </NextLink>
     <Divider
       borderColor={useColorModeValue('gray.400', 'gray.600')}
-      my={3}
+      my={6}
     ></Divider>
   </>
 );

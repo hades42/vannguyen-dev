@@ -9,6 +9,33 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Date from '../../components/Date';
+import { MDXProvider } from '@mdx-js/react';
+import CustomCode from '../../components/code-block/codeblock';
+
+import {
+  MyH1,
+  MyH2,
+  MyH3,
+  MyH4,
+  MyLink,
+  MyStrong,
+  MyImage,
+  MyList,
+  MyHr,
+} from '../../components/mdx/custom-component';
+
+const components = {
+  pre: CustomCode,
+  h1: MyH1,
+  h2: MyH2,
+  h3: MyH3,
+  h4: MyH4,
+  a: MyLink,
+  strong: MyStrong,
+  img: MyImage,
+  li: MyList,
+  hr: MyHr,
+};
 
 export async function getStaticPaths() {
   const paths = getAllPostIds();
@@ -49,7 +76,9 @@ export default function Post({ postData, mdxSource }) {
         </HStack>
       </Box>
       <div id="post-body">
-        <MDXRemote {...mdxSource} />
+        <MDXProvider components={components}>
+          <MDXRemote {...mdxSource} />
+        </MDXProvider>
       </div>
     </>
   );

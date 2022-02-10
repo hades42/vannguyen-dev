@@ -18,7 +18,7 @@ const MyLink = props => {
 };
 
 const MyStrong = props => {
-  let color = useColorModeValue('purple', '#fabd2f');
+  let color = useColorModeValue('globalBlue', '#fabd2f');
   return (
     <Text as="span" display="inline" color={color} fontWeight="bold">
       {props.children}

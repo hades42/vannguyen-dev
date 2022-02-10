@@ -112,7 +112,7 @@ const Page = () => {
                 <Button
                   margin={['20px 0 0 0', '20px 10px 5px 0']}
                   rightIcon={<ChevronRightIcon />}
-                  colorScheme={useColorModeValue('purple', 'orange')}
+                  colorScheme={useColorModeValue('blackAlpha', 'orange')}
                 >
                   My Posts
                 </Button>
@@ -124,7 +124,7 @@ const Page = () => {
                 <Button
                   margin={['10px 0 0 0', '20px 0 5px 10px']}
                   rightIcon={<ChevronRightIcon />}
-                  colorScheme={useColorModeValue('purple', 'orange')}
+                  colorScheme={useColorModeValue('blackAlpha', 'orange')}
                 >
                   My Projects
                 </Button>
@@ -177,7 +177,7 @@ const Page = () => {
               <Link href="https://github.com/hades42" target="_blank">
                 <Button
                   variant="ghost"
-                  color={useColorModeValue('purple', 'orange.200')}
+                  color={useColorModeValue('globalBlue', 'orange.200')}
                   leftIcon={<Icon as={IoLogoGithub} />}
                 >
                   @hades42
@@ -192,7 +192,7 @@ const Page = () => {
               >
                 <Button
                   variant="ghost"
-                  color={useColorModeValue('purple', 'orange.200')}
+                  color={useColorModeValue('globalBlue', 'orange.200')}
                   leftIcon={<Icon as={IoLogoLinkedin} />}
                 >
                   @LinkedIn (Van Nguyen Nguyen)
@@ -209,7 +209,7 @@ const Page = () => {
               >
                 <Button
                   variant="ghost"
-                  color={useColorModeValue('purple', 'orange.200')}
+                  color={useColorModeValue('globalBlue', 'orange.200')}
                   leftIcon={<Icon as={IoLogoGoogle} />}
                   onClick={copyToClipboard}
                   value="nguyenvannguyen.oc@gmail.com"

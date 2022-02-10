@@ -7,13 +7,17 @@ const Paragraph = styled.p`
   text-indent: 1em;
 `;
 
-const Reference = ({ children, path }) => {
+const Reference = ({ children, path, notDefault }) => {
   return (
     <Link
       href={path}
       isExternal
       fontWeight="bold"
-      color={useColorModeValue('purple', 'orange.200')}
+      color={
+        notDefault
+          ? 'orange.200'
+          : useColorModeValue('globalBlue', 'orange.200')
+      }
     >
       {children}
     </Link>

@@ -24,7 +24,7 @@ const Footer = () => {
         if you see something go wrong
       </Text>
       <Text color="white">
-        Contanct me:{' '}
+        Contact me:{' '}
         <Link
           color="orange.200"
           fontWeight="bold"

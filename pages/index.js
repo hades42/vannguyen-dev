@@ -22,8 +22,12 @@ import { BioYear, BioDesc } from '../components/bio';
 import Layout from '../components/layout/article';
 import { IoLogoGithub, IoLogoLinkedin, IoLogoGoogle } from 'react-icons/io5';
 import { useState } from 'react';
+import { PageSeo } from '../components/SEO/SEO';
+import { siteMetadata } from '../components/SEO/siteMetadata';
 
 const Page = () => {
+  const { occupation, title, author, description } = siteMetadata;
+
   const [currLable, setCurrLable] = useState('Copy Email?');
   const [activeCopy, setActiveCopy] = useState(false);
 
@@ -51,177 +55,185 @@ const Page = () => {
   };
 
   return (
-    <Layout>
-      <Container>
-        <Box
-          borderRadius="lg"
-          bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          p={3}
-          mb={6}
-          mt={4}
-          align="center"
-        >
-          Hi, I'm just a geek who love making software
-        </Box>
-
-        <Box display={{ md: 'flex' }}>
-          <Box flexGrow={1}>
-            <Heading as="h2" variant="page-title">
-              Van Nguyen Nguyen
-            </Heading>
-            <p>Software Engineer</p>
-          </Box>
+    <>
+      <PageSeo title={`${title} - Home Page`} description={description} />
+      <Layout>
+        <Container>
           <Box
-            flexShrink={0}
+            borderRadius="lg"
+            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+            p={3}
+            mb={6}
+            mt={4}
             align="center"
-            mt={{ base: 4, md: 0 }}
-            ml={{ md: 6 }}
           >
-            <Image
-              borderColor="whiteAlpha.800"
-              borderWidth={2}
-              borderStyle="solid"
-              maxWidth="100px"
-              display="inline-block"
-              borderRadius="full"
-              objectFit="cover"
-              src="/images/profile.png"
-              alt="Profile Image"
-            ></Image>
+            Hi, I'm just a geek who love making software
           </Box>
-        </Box>
 
-        <Section delay={0.1}>
-          <Heading as="h3" variant="section-title">
-            About Me
-          </Heading>
-          <Paragraph>
-            I am currently a student at Macquarie University who is majoring in
-            Information Technology and have a huge passion for building software
-            to solve some real-life problems. I also enjoy spending time on
-            joining coding competition with my friends like Hackathon or{' '}
-            <Reference path="https://atcoder.jp/users/Poseidon42">
-              Competitive Programming (Atcoder{' '}
-              <ExternalLinkIcon></ExternalLinkIcon>)
-            </Reference>{' '}
-            during my free times from Uni.
-          </Paragraph>
-          <Stack align="center" justify="center" direction={['column', 'row']}>
-            <Box>
-              <NextLink href="/posts">
-                <Button
-                  margin={['20px 0 0 0', '20px 10px 5px 0']}
-                  rightIcon={<ChevronRightIcon />}
-                  colorScheme={useColorModeValue('blackAlpha', 'orange')}
-                >
-                  My Posts
-                </Button>
-              </NextLink>
+          <Box display={{ md: 'flex' }}>
+            <Box flexGrow={1}>
+              <Heading as="h2" variant="page-title">
+                {author}
+              </Heading>
+              <p>{occupation}</p>
             </Box>
-
-            <Box>
-              <NextLink href="/projects">
-                <Button
-                  margin={['10px 0 0 0', '20px 0 5px 10px']}
-                  rightIcon={<ChevronRightIcon />}
-                  colorScheme={useColorModeValue('blackAlpha', 'orange')}
-                >
-                  My Projects
-                </Button>
-              </NextLink>
+            <Box
+              flexShrink={0}
+              align="center"
+              mt={{ base: 4, md: 0 }}
+              ml={{ md: 6 }}
+            >
+              <Image
+                borderColor="whiteAlpha.800"
+                borderWidth={2}
+                borderStyle="solid"
+                maxWidth="150px"
+                display="inline-block"
+                borderRadius="md"
+                objectFit="cover"
+                src="/images/avatar.jpg"
+                alt="Profile Image"
+              ></Image>
             </Box>
-          </Stack>
-        </Section>
+          </Box>
 
-        <Section delay={0.2}>
-          <Heading as="h3" variant="section-title">
-            Bio
-          </Heading>
-          <VStack alignItems="start">
-            <HStack w="100%" spacing={8}>
-              <BioYear w="20%">2000</BioYear>
-              <BioDesc>I was born in Da Nang city, Viet Nam.</BioDesc>
-            </HStack>
+          <Section delay={0.1}>
+            <Heading as="h3" variant="section-title">
+              About Me
+            </Heading>
+            <Paragraph>
+              I am currently a student at Macquarie University who is majoring
+              in Information Technology and have a huge passion for building
+              software to solve some real-life problems. I also enjoy spending
+              time on joining coding competition with my friends like Hackathon
+              or{' '}
+              <Reference path="https://atcoder.jp/users/Poseidon42">
+                Competitive Programming (Atcoder{' '}
+                <ExternalLinkIcon></ExternalLinkIcon>)
+              </Reference>{' '}
+              during my free times from Uni.
+            </Paragraph>
+            <Stack
+              align="center"
+              justify="center"
+              direction={['column', 'row']}
+            >
+              <Box>
+                <NextLink href="/posts">
+                  <Button
+                    margin={['20px 0 0 0', '20px 10px 5px 0']}
+                    rightIcon={<ChevronRightIcon />}
+                    colorScheme={useColorModeValue('blackAlpha', 'orange')}
+                  >
+                    My Posts
+                  </Button>
+                </NextLink>
+              </Box>
 
-            <HStack w="100%" spacing={8}>
-              <BioYear w="20%">2019 - 2022</BioYear>
-              <BioDesc>
-                Go to Macquarie University for Bachelor of Information
-                Technology (current)
-              </BioDesc>
-            </HStack>
-          </VStack>
-        </Section>
+              <Box>
+                <NextLink href="/projects">
+                  <Button
+                    margin={['10px 0 0 0', '20px 0 5px 10px']}
+                    rightIcon={<ChevronRightIcon />}
+                    colorScheme={useColorModeValue('blackAlpha', 'orange')}
+                  >
+                    My Projects
+                  </Button>
+                </NextLink>
+              </Box>
+            </Stack>
+          </Section>
 
-        <Section delay={0.3}>
-          <Heading as="h3" variant="section-title">
-            I love
-          </Heading>
-          <Paragraph>
-            Playing video game (puzzle and rogue-like), listening to music
-            (Lo-fi), reading book (specially sci-fi), manga/anime, doing
-            programming challenge (like{' '}
-            <Reference path="https://github.com/hades42/CompetitiveProgramming">
-              Competitive Programming <ExternalLinkIcon></ExternalLinkIcon>
-            </Reference>
-            ) and learning about the computer
-          </Paragraph>
-        </Section>
+          <Section delay={0.2}>
+            <Heading as="h3" variant="section-title">
+              Bio
+            </Heading>
+            <VStack alignItems="start">
+              <HStack w="100%" spacing={8}>
+                <BioYear w="20%">2000</BioYear>
+                <BioDesc>I was born in Da Nang city, Viet Nam.</BioDesc>
+              </HStack>
 
-        <Section delay={0.3}>
-          <Heading as="h3" variant="section-title">
-            I'm on the Internet
-          </Heading>
-          <List>
-            <ListItem>
-              <Link href="https://github.com/hades42" target="_blank">
-                <Button
-                  variant="ghost"
-                  color={useColorModeValue('globalBlue', 'orange.200')}
-                  leftIcon={<Icon as={IoLogoGithub} />}
+              <HStack w="100%" spacing={8}>
+                <BioYear w="20%">2019 - 2022</BioYear>
+                <BioDesc>
+                  Go to Macquarie University for Bachelor of Information
+                  Technology (current)
+                </BioDesc>
+              </HStack>
+            </VStack>
+          </Section>
+
+          <Section delay={0.3}>
+            <Heading as="h3" variant="section-title">
+              I love
+            </Heading>
+            <Paragraph>
+              Playing video game (puzzle and rogue-like), listening to music
+              (Lo-fi), reading book (specially sci-fi), manga/anime, doing
+              programming challenge (like{' '}
+              <Reference path="https://github.com/hades42/CompetitiveProgramming">
+                Competitive Programming <ExternalLinkIcon></ExternalLinkIcon>
+              </Reference>
+              ) and learning about the computer
+            </Paragraph>
+          </Section>
+
+          <Section delay={0.3}>
+            <Heading as="h3" variant="section-title">
+              I'm on the Internet
+            </Heading>
+            <List>
+              <ListItem>
+                <Link href="https://github.com/hades42" target="_blank">
+                  <Button
+                    variant="ghost"
+                    color={useColorModeValue('globalBlue', 'orange.200')}
+                    leftIcon={<Icon as={IoLogoGithub} />}
+                  >
+                    @hades42
+                  </Button>
+                </Link>
+              </ListItem>
+
+              <ListItem>
+                <Link
+                  href="https://www.linkedin.com/in/van-nguyen-nguyen-031205178/"
+                  target="_blank"
                 >
-                  @hades42
-                </Button>
-              </Link>
-            </ListItem>
+                  <Button
+                    variant="ghost"
+                    color={useColorModeValue('globalBlue', 'orange.200')}
+                    leftIcon={<Icon as={IoLogoLinkedin} />}
+                  >
+                    @LinkedIn (Van Nguyen Nguyen)
+                  </Button>
+                </Link>
+              </ListItem>
 
-            <ListItem>
-              <Link
-                href="https://www.linkedin.com/in/van-nguyen-nguyen-031205178/"
-                target="_blank"
-              >
-                <Button
-                  variant="ghost"
-                  color={useColorModeValue('globalBlue', 'orange.200')}
-                  leftIcon={<Icon as={IoLogoLinkedin} />}
+              <ListItem onMouseEnter={resetLable}>
+                <Tooltip
+                  label={currLable}
+                  bg={!activeCopy ? 'grassTeal' : 'green.500'}
+                  placement="right-end"
+                  closeOnClick={false}
                 >
-                  @LinkedIn (Van Nguyen Nguyen)
-                </Button>
-              </Link>
-            </ListItem>
-
-            <ListItem onMouseEnter={resetLable}>
-              <Tooltip
-                label={currLable}
-                bg={!activeCopy ? 'grassTeal' : 'green.500'}
-                placement="right-end"
-                closeOnClick={false}
-              >
-                <Button
-                  variant="ghost"
-                  color={useColorModeValue('globalBlue', 'orange.200')}
-                  leftIcon={<Icon as={IoLogoGoogle} />}
-                  onClick={copyToClipboard}
-                  value="nguyenvannguyen.oc@gmail.com"
-                >
-                  nguyenvannguyen.oc@gmail.com
-                </Button>
-              </Tooltip>
-            </ListItem>
-          </List>
-        </Section>
-      </Container>
-    </Layout>
+                  <Button
+                    variant="ghost"
+                    color={useColorModeValue('globalBlue', 'orange.200')}
+                    leftIcon={<Icon as={IoLogoGoogle} />}
+                    onClick={copyToClipboard}
+                    value="nguyenvannguyen.oc@gmail.com"
+                  >
+                    nguyenvannguyen.oc@gmail.com
+                  </Button>
+                </Tooltip>
+              </ListItem>
+            </List>
+          </Section>
+        </Container>
+      </Layout>
+    </>
   );
 };
 

@@ -23,6 +23,8 @@ import {
   MyList,
   MyHr,
 } from '../../components/mdx/custom-component';
+import { BlogSeo } from '../../components/SEO/SEO';
+import { siteMetadata } from '../../components/SEO/siteMetadata';
 
 const components = {
   pre: CustomCode,
@@ -53,6 +55,7 @@ export async function getStaticProps({ params }) {
       rehypePlugins: [],
     },
   });
+  delete postData.content;
   return {
     props: {
       postData,
@@ -63,9 +66,17 @@ export async function getStaticProps({ params }) {
 
 export default function Post({ postData, mdxSource }) {
   const color = useColorModeValue('gray.900', 'whiteAlpha.700');
+  const { date, id, lastmod, summary, title } = postData;
 
   return (
     <>
+      <BlogSeo
+        url={`${siteMetadata.siteUrl}/posts/${id}`}
+        title={title}
+        summary={summary}
+        date={date}
+        lastmod={lastmod}
+      />
       <Box marginY="5">
         <Heading as="h2" size="lg">
           {postData.title}

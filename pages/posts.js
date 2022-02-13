@@ -24,14 +24,18 @@ export async function getStaticProps() {
 
 const SinglePost = ({ post }) => (
   <>
-    <NextLink href={`/posts/${post.id}`}>
-      <LinkBox cursor="pointer" mb={3}>
+    <NextLink href={`/posts/${post.id}`} passHref>
+      <LinkBox cursor="pointer" mb={3} href={`/posts/${post.id}`}>
         <Heading as="h3" fontSize={20}>
-          {post.title}
+          <NextLink href={`/posts/${post.id}`} passHref>
+            {post.title}
+          </NextLink>
         </Heading>
         <Date dateString={post.date} />
         <Text color={useColorModeValue('black', 'gray.300')} marginTop="2">
-          {post.summary}
+          <NextLink href={`/posts/${post.id}`} passHref>
+            {post.summary}
+          </NextLink>
         </Text>
       </LinkBox>
     </NextLink>

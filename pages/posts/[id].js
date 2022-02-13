@@ -25,6 +25,7 @@ import {
 } from '../../components/mdx/custom-component';
 import { BlogSeo } from '../../components/SEO/SEO';
 import { siteMetadata } from '../../components/SEO/siteMetadata';
+import Layout from '../../components/layout/article';
 
 const components = {
   pre: CustomCode,
@@ -77,22 +78,24 @@ export default function Post({ postData, mdxSource }) {
         date={date}
         lastmod={lastmod}
       />
-      <Box marginY="5">
-        <Heading as="h2" size="lg">
-          {postData.title}
-        </Heading>
-        <HStack>
-          <Text color={color}>{postData.author}</Text>
-          <Date dateString={postData.date} />
-        </HStack>
-      </Box>
-      <div id="post-body">
-        <MDXProvider components={components}>
-          <article>
-            <MDXRemote {...mdxSource} />
-          </article>
-        </MDXProvider>
-      </div>
+      <Layout>
+        <Box marginY="5">
+          <Heading as="h2" size="lg">
+            {postData.title}
+          </Heading>
+          <HStack>
+            <Text color={color}>{postData.author}</Text>
+            <Date dateString={postData.date} />
+          </HStack>
+        </Box>
+        <div id="post-body">
+          <MDXProvider components={components}>
+            <article>
+              <MDXRemote {...mdxSource} />
+            </article>
+          </MDXProvider>
+        </div>
+      </Layout>
     </>
   );
 }

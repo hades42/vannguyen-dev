@@ -93,6 +93,8 @@ const Page = () => {
                 objectFit="cover"
                 src="/images/avatar.jpg"
                 alt="Profile Image"
+                htmlWidth="146"
+                htmlHeight="219"
               ></Image>
             </Box>
           </Box>
@@ -119,7 +121,7 @@ const Page = () => {
               direction={['column', 'row']}
             >
               <Box>
-                <NextLink href="/posts">
+                <NextLink href="/posts" passHref>
                   <Button
                     margin={['20px 0 0 0', '20px 10px 5px 0']}
                     rightIcon={<ChevronRightIcon />}
@@ -131,7 +133,7 @@ const Page = () => {
               </Box>
 
               <Box>
-                <NextLink href="/projects">
+                <NextLink href="/projects" passHref>
                   <Button
                     margin={['10px 0 0 0', '20px 0 5px 10px']}
                     rightIcon={<ChevronRightIcon />}

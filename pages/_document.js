@@ -22,7 +22,7 @@ export default class Document extends NextDocument {
             rel="icon"
             type="image/png"
             sizes="16x16"
-            href="/favicons//favicon-16x16.png"
+            href="/favicons/favicon-16x16.png"
           />
           <link rel="manifest" href="/favicons/site.webmanifest" />
           <meta

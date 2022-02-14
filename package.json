@@ -6,7 +6,8 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "prettier": "prettier -write .",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "node ./scripts/generate-sitemap.mjs && node ./scripts/generate-robot.mjs"
   },
   "keywords": [],
   "author": "Van Nguyen Nguyen",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "eslint": "^8.7.0",
     "eslint-config-next": "^12.0.9",
+    "globby": "^11.1.0",
     "prettier": "^2.5.1"
   }
 }

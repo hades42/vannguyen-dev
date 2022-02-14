@@ -2,7 +2,6 @@ import {
   Container,
   Box,
   Heading,
-  Image,
   useColorModeValue,
   Button,
   VStack,

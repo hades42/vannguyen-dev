@@ -5,7 +5,7 @@ export const siteMetadata = {
   occupation: 'Software Engineer',
   headerTitle: 'Van Nguyen Dev',
   description:
-    'I am a software engineer who have a huge passion for building and making software better',
+    'Hi my name is Van Nguyen Nguyen, I am a software engineer who have a huge passion for building and making software better',
   language: 'en-us',
   siteUrl: 'https://www.vannguyen-dev.com',
   siteLogo: '/images/favicon.ico',

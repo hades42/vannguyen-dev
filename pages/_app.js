@@ -2,7 +2,6 @@ import '../lib/global.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import Main from '../components/layout/main';
 import theme from '../lib/theme';
-import Fonts from '../components/fonts';
 import { AnimatePresence } from 'framer-motion';
 import { Global, css } from '@emotion/react';
 import codeTheme from '../components/code-block/theme';
@@ -51,7 +50,6 @@ const Website = ({ Component, pageProps, router }) => {
         ></meta>
       </Head>
       <DefaultSeo {...SEO} />
-      <Fonts />
       <CodeTheme />
       <Main router={router}>
         {loading ? (

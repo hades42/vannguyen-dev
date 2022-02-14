@@ -51,8 +51,8 @@ const Posts = ({ allPostsData }) => {
   return (
     <>
       <PageSeo
-        title={`${title} - Blog Pages`}
-        description={`A small digital blog where I share my experience as well as some tutorial to develope interesting things - ${siteUrl}`}
+        title={`${title} - Blog Page`}
+        description={`A small digital blog created by Van Nguyen Nguyen. This is where I share my experience as well as some tutorial to develope interesting things - ${siteUrl}`}
       />
       <Layout>
         <Container>

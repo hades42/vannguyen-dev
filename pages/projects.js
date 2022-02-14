@@ -13,7 +13,7 @@ const Projects = () => {
     <>
       <PageSeo
         title={`${title} - Projects Page`}
-        description="This is where I show all of my interesting projects"
+        description="A small showcase of all projects by Van Nguyen Nguyen. This is where I show all of my interesting projects"
       />
       <Layout>
         <Container>

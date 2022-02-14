@@ -31,6 +31,10 @@ export default class Document extends NextDocument {
           />
           <meta name="msapplication-TileColor" content="#A3E635" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

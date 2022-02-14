@@ -24,6 +24,7 @@ import { IoLogoGithub, IoLogoLinkedin, IoLogoGoogle } from 'react-icons/io5';
 import { useState } from 'react';
 import { PageSeo } from '../components/SEO/SEO';
 import { siteMetadata } from '../components/SEO/siteMetadata';
+import NextImage from 'next/image';
 
 const Page = () => {
   const { occupation, title, author, description } = siteMetadata;
@@ -83,19 +84,22 @@ const Page = () => {
               mt={{ base: 4, md: 0 }}
               ml={{ md: 6 }}
             >
-              <Image
+              <Box
                 borderColor="whiteAlpha.800"
                 borderWidth={2}
                 borderStyle="solid"
-                maxWidth="150px"
-                display="inline-block"
                 borderRadius="md"
-                objectFit="cover"
-                src="/images/avatar.jpg"
-                alt="Profile Image"
-                htmlWidth="146"
-                htmlHeight="219"
-              ></Image>
+                width="150px"
+                height="220px"
+                position="relative"
+              >
+                <NextImage
+                  src="/images/avatar.jpg"
+                  alt="Profile Picture"
+                  layout="fill"
+                  priority
+                />
+              </Box>
             </Box>
           </Box>
 

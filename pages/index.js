@@ -56,7 +56,7 @@ const Page = () => {
 
   return (
     <>
-      <PageSeo title={`${title} - Home Page`} description={description} />
+      <PageSeo title={`${title} - ${occupation}`} description={description} />
       <Layout>
         <Container>
           <Box

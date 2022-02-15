@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 
-const crawlableRobotsTxt = `User-agent: *\nAllow: /\n\nSitemap: https://www.vannguyen-dev.com/sitemap.xml`;
+const crawlableRobotsTxt = `User-agent: *\nAllow: /\n\nSitemap: https://www.hades42.com/sitemap.xml`;
 const uncrawlableRobotsTxt = `User-agent: *\nDisallow: /`;
 (function generateRobotsTxt() {
   // Create a non-crawlable robots.txt in preview links

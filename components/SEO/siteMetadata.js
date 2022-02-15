@@ -1,13 +1,13 @@
 export const siteMetadata = {
-  title: 'Van Nguyen Dev',
+  title: 'Van Nguyen Nguyen',
   author: 'Van Nguyen Nguyen',
-  avatar: 'https://i.postimg.cc/18TrqfZF/avatar.jpg',
+  avatar: '/images/avatar.jpg',
   occupation: 'Software Engineer',
-  headerTitle: 'Van Nguyen Dev',
+  headerTitle: 'Van Nguyen Nguyen',
   description:
     'Hi my name is Van Nguyen Nguyen, I am a software engineer who have a huge passion for building and making software better',
   language: 'en-us',
-  siteUrl: 'https://www.vannguyen-dev.com',
+  siteUrl: 'https://www.hades42.com',
   siteLogo: '/images/favicon.ico',
   socialBanner: '/images/avatar.jpg',
   github: 'https://github.com/hades42',

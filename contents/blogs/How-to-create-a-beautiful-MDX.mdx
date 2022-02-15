@@ -11,7 +11,7 @@ some beautiful codeblock with nice custom theme color, showing proper line, colo
 name file type,... And you also want to make the same thing. In this post, I will show you everything
 I know about how to make a custom digital blog by MDX.
 
-![This is a codeblock on MDX website](/images/How-to-create-a-beautiful-MDX/codeblock.png)
+<TestImage width="300" height="150" alt="This is a codeblock on MDX website" src="/images/How-to-create-a-beautiful-MDX/codeblock.png" />
 
 ---
 
@@ -332,7 +332,7 @@ hasn't MDX allowed you to import new components already?"*. Yes, but controlling
 <br/>
 Your page will probably look like this.
 
-![Initial Setup](/images/How-to-create-a-beautiful-MDX/setup-page.png)
+<TestImage height="250" alt="Initial Setup" src="/images/How-to-create-a-beautiful-MDX/setup-page.png"/>
 
 ## Styling your tags
 [MDX Docs](https://mdxjs.com/docs/using-mdx/#mdx-provider) actually show you the way to style your components through
@@ -446,7 +446,7 @@ with markdown and the `link` will turn into blue.
 Now let go back to the `props` variable before. If you scroll up, you can see I did `console.log(props)`.
 Let see what it is from the console
 
-![console.log(props)](/images/How-to-create-a-beautiful-MDX/props.png)
+<TestImage alt="console.log(props)" height="100" src="/images/How-to-create-a-beautiful-MDX/props.png"/>
 
 If you know about ReactJS (I assume you did), if you pass any key value to a component, you can get
 it value through `props`. So MDX under the hood already parse the whole file to know which one
@@ -726,7 +726,7 @@ list, there is no need to add global style, you can remove it.
 I hope that you did check the `console.log(props)` from the your custom codeblock. This is
 what we see on in the console:
 
-![console.log(props) from the custom codeblock](/images/How-to-create-a-beautiful-MDX/console-code-block.png)
+<TestImage alt="[console.log(props) from the custom codeblock" height="200" src="/images/How-to-create-a-beautiful-MDX/console-code-block.png"/>
 
 There is some interesting props here: `file`, `highlights`, `metastring`. If you comeback to the content
 that I already gave in the beginning, there are some **extra key value** I put in the codeblock which for a usual

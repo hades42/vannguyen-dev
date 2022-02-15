@@ -1,6 +1,7 @@
 import { Heading, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import { Reference } from '../paragraph';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import NextImage from 'next/image';
 
 const MyH1 = props => <Heading marginY="18px" as="h1" size="lg" {...props} />;
 const MyH2 = props => <Heading marginY="18px" as="h2" size="md" {...props} />;
@@ -46,6 +47,35 @@ const MyImage = props => {
   );
 };
 
+const TestImage = props => {
+  const src = props.src;
+  const alt = props.alt;
+  const color = useColorModeValue('black.600', 'gray.400');
+  const width = props.width || 300;
+  const height = props.height || 300;
+  return (
+    <div style={{ display: 'block', margin: '30px 0' }}>
+      <NextImage
+        width={width}
+        height={height}
+        src={src}
+        alt={alt}
+        layout="responsive"
+        priority
+      />
+      <Text
+        as="span"
+        marginTop="2"
+        display="block"
+        align="center"
+        color={color}
+      >
+        {alt}
+      </Text>
+    </div>
+  );
+};
+
 const MyList = props => {
   return <li style={{ margin: '10px 0 10px 30px' }}>{props.children}</li>;
 };
@@ -55,4 +85,15 @@ const MyHr = props => {
   return <hr style={{ borderColor: `${color}`, margin: '30px 0' }} />;
 };
 
-export { MyH1, MyH4, MyH3, MyH2, MyLink, MyStrong, MyImage, MyList, MyHr };
+export {
+  TestImage,
+  MyH1,
+  MyH4,
+  MyH3,
+  MyH2,
+  MyLink,
+  MyStrong,
+  MyImage,
+  MyList,
+  MyHr,
+};

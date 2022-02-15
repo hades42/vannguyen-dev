@@ -22,10 +22,12 @@ import {
   MyImage,
   MyList,
   MyHr,
+  TestImage,
 } from '../../components/mdx/custom-component';
 import { BlogSeo } from '../../components/SEO/SEO';
 import { siteMetadata } from '../../components/SEO/siteMetadata';
 import Layout from '../../components/layout/article';
+import React from 'react';
 
 const components = {
   pre: CustomCode,
@@ -38,6 +40,7 @@ const components = {
   img: MyImage,
   li: MyList,
   hr: MyHr,
+  TestImage,
 };
 
 export async function getStaticPaths() {
@@ -65,7 +68,7 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function Post({ postData, mdxSource }) {
+function Post({ postData, mdxSource }) {
   const color = useColorModeValue('gray.900', 'whiteAlpha.700');
   const { date, id, lastmod, summary, title } = postData;
 
@@ -99,3 +102,5 @@ export default function Post({ postData, mdxSource }) {
     </>
   );
 }
+
+export default React.memo(Post);

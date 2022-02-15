@@ -5,7 +5,7 @@ import {
   Text,
   Divider,
   useColorModeValue,
-  LinkBox,
+  LinkOverlay,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { getSortedPostsData } from '../lib/post';
@@ -25,7 +25,7 @@ export async function getStaticProps() {
 const SinglePost = ({ post }) => (
   <>
     <NextLink href={`/posts/${post.id}`} passHref>
-      <LinkBox cursor="pointer" mb={3} href={`/posts/${post.id}`}>
+      <LinkOverlay cursor="pointer" mb={3}>
         <Heading as="h3" fontSize={20}>
           <NextLink href={`/posts/${post.id}`} passHref>
             {post.title}
@@ -37,7 +37,7 @@ const SinglePost = ({ post }) => (
             {post.summary}
           </NextLink>
         </Text>
-      </LinkBox>
+      </LinkOverlay>
     </NextLink>
     <Divider
       borderColor={useColorModeValue('gray.400', 'gray.600')}

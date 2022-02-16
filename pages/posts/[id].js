@@ -7,11 +7,11 @@ import {
   Text,
   HStack,
   useColorModeValue,
+  Flex,
 } from '@chakra-ui/react';
 import Date from '../../components/Date';
 import { MDXProvider } from '@mdx-js/react';
 import CustomCode from '../../components/code-block/codeblock';
-
 import {
   MyH1,
   MyH2,
@@ -27,7 +27,9 @@ import {
 import { BlogSeo } from '../../components/SEO/SEO';
 import { siteMetadata } from '../../components/SEO/siteMetadata';
 import Layout from '../../components/layout/article';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import TOC from '../../components/mdx/TOC';
+import { TocContext } from '../../hooks/globalContext';
 
 const components = {
   pre: CustomCode,
@@ -70,8 +72,15 @@ export async function getStaticProps({ params }) {
 
 function Post({ postData, mdxSource }) {
   const color = useColorModeValue('gray.900', 'whiteAlpha.700');
-  const { date, id, lastmod, summary, title } = postData;
+  const { date, id, lastmod, summary, title, isTOC } = postData;
+  const { appearTOC, setAppearTOC } = useContext(TocContext);
 
+  useEffect(() => {
+    setAppearTOC(isTOC);
+    return () => {
+      setAppearTOC(false);
+    };
+  });
   return (
     <>
       <BlogSeo
@@ -82,22 +91,30 @@ function Post({ postData, mdxSource }) {
         lastmod={lastmod}
       />
       <Layout>
-        <Box marginY="5">
-          <Heading as="h2" size="lg">
-            {postData.title}
-          </Heading>
-          <HStack>
-            <Text color={color}>{postData.author}</Text>
-            <Date dateString={postData.date} />
-          </HStack>
-        </Box>
-        <div id="post-body">
-          <MDXProvider components={components}>
-            <article>
-              <MDXRemote {...mdxSource} />
-            </article>
-          </MDXProvider>
-        </div>
+        <Flex>
+          <Box
+            width={isTOC ? ['100%', '100%', '100%', '75%'] : '100%'}
+            paddingRight={isTOC && '40px'}
+          >
+            <Box marginY="5">
+              <Heading as="h2" size="lg">
+                {postData.title}
+              </Heading>
+              <HStack>
+                <Text color={color}>{postData.author}</Text>
+                <Date dateString={postData.date} />
+              </HStack>
+            </Box>
+            <div id="post-body">
+              <MDXProvider components={components}>
+                <article>
+                  <MDXRemote {...mdxSource} />
+                </article>
+              </MDXProvider>
+            </div>
+          </Box>
+          {isTOC && <TOC />}
+        </Flex>
       </Layout>
     </>
   );

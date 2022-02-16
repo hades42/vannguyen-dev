@@ -4,20 +4,19 @@ import {
   Heading,
   useColorModeValue,
   Button,
-  VStack,
-  HStack,
   ListItem,
   List,
   Link,
   Icon,
   Tooltip,
   Stack,
+  LinkOverlay,
+  LinkBox,
 } from '@chakra-ui/react';
 import Section from '../components/section';
 import { Paragraph, Reference } from '../components/paragraph';
 import { ExternalLinkIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link';
-import { BioYear, BioDesc } from '../components/bio';
 import Layout from '../components/layout/article';
 import { IoLogoGithub, IoLogoLinkedin, IoLogoGoogle } from 'react-icons/io5';
 import { useState } from 'react';
@@ -25,8 +24,19 @@ import { PageSeo } from '../components/SEO/SEO';
 import { siteMetadata } from '../components/SEO/siteMetadata';
 import NextImage from 'next/image';
 import { GeneralContainer } from '../components/GeneralContainer';
+import { getSortedPostsData } from '../lib/post';
+import Date from '../components/Date';
 
-const Page = () => {
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData().slice(0, 3);
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+const Page = ({ allPostsData }) => {
   const { occupation, title, author, description } = siteMetadata;
 
   const [currLable, setCurrLable] = useState('Copy Email?');
@@ -153,22 +163,29 @@ const Page = () => {
 
             <Section delay={0.2}>
               <Heading as="h3" variant="section-title">
-                Bio
+                My Latest Posts
               </Heading>
-              <VStack alignItems="start">
-                <HStack w="100%" spacing={8}>
-                  <BioYear w="20%">2000</BioYear>
-                  <BioDesc>I was born in Da Nang city, Viet Nam.</BioDesc>
-                </HStack>
-
-                <HStack w="100%" spacing={8}>
-                  <BioYear w="20%">2019 - 2022</BioYear>
-                  <BioDesc>
-                    Go to Macquarie University for Bachelor of Information
-                    Technology (current)
-                  </BioDesc>
-                </HStack>
-              </VStack>
+              {allPostsData.map(post => (
+                <LinkBox
+                  _hover={{
+                    background: useColorModeValue(
+                      'rgba(228, 229, 237, 0.7)',
+                      'rgb(48, 53, 82)'
+                    ),
+                    borderRadius: '8px',
+                  }}
+                  paddingY="3"
+                  paddingX="2"
+                  my="3"
+                >
+                  <Heading as="h3" fontSize="20px">
+                    <NextLink href={`/posts/${post.id}`} passHref>
+                      <LinkOverlay># {post.title}</LinkOverlay>
+                    </NextLink>
+                  </Heading>
+                  <Date dateString={post.date} />
+                </LinkBox>
+              ))}
             </Section>
 
             <Section delay={0.3}>

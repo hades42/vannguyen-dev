@@ -1,7 +1,7 @@
 ---
 title: "How to create a beautiful page with NextJS, MDX"
 date: "2022-02-05"
-lastmod : "2022-02-07"
+lastmod : "2022-02-16"
 summary: "In this post, I will show use how to create a page by using NextJS, MDX with custom tags (from heading, link, img, codeblock,...) in your own style"
 author: "Van Nguyen Nguyen"
 isTOC: true
@@ -224,7 +224,7 @@ From now, I assume that you understand about **Static Generation** as
 well as **Dynamic Routing** (since these are fundamental topics that got covered
 in NextJS tutorial course) like how to use `getStaticPaths` and `getStaticProps`. 
 
-> **Note**: If you follow the `mdx-js/loader` approach, you can just create some `[filename].mdx` and see
+> If you follow the `mdx-js/loader` approach, you can just create some `[filename].mdx` and see
 the magic happens, the content you write in the MDX file will be translated into HTML format. Do 
 not forget the config your `next.config.js` and install `mdx-js/loader`
 
@@ -718,7 +718,7 @@ If there something wrong, please refer to [Prerequisites section](#Prerequisites
 
 <br/>
 
-> **Note**: `prism-react-renderer` actually provide you color theme, they did
+> `prism-react-renderer` actually provide you color theme, they did
 show you how to apply it in their docs, but they dont have GruvBox that why I have to find the GruvBox 
 style for global style to override their default color. If you are able to find your favorite theme in their 
 list, there is no need to add global style, you can remove it.

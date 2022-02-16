@@ -91,41 +91,39 @@ function Post({ postData, mdxSource }) {
         date={date}
         lastmod={lastmod}
       />
-      <Layout>
-        <Flex>
-          <Box
-            width={isTOC ? ['100%', '100%', '100%', '75%'] : '100%'}
-            paddingRight={isTOC && '40px'}
-          >
-            <Box marginY="5">
-              <Heading as="h2" size="lg" marginBottom="2">
-                {postData.title}
-              </Heading>
-              <HStack>
-                <Text color={color}>{postData.author} - </Text>
-                <Date dateString={postData.date} />
-                <Link
-                  href={`https://github.com/hades42/vannguyen-dev/blob/main/contents/blogs/${id}.mdx`}
-                  target="_blank"
-                  color={useColorModeValue('blackAlpha.800', 'orange.200')}
-                  fontWeight="bold"
-                  paddingLeft="10px"
-                >
-                  Edit on Github
-                </Link>
-              </HStack>
-            </Box>
-            <div id="post-body">
-              <MDXProvider components={components}>
-                <article>
-                  <MDXRemote {...mdxSource} />
-                </article>
-              </MDXProvider>
-            </div>
+      <Flex>
+        <Box
+          width={isTOC ? ['100%', '100%', '100%', '75%'] : '100%'}
+          paddingRight={isTOC && '40px'}
+        >
+          <Box marginY="5">
+            <Heading as="h2" size="lg" marginBottom="2">
+              {postData.title}
+            </Heading>
+            <HStack>
+              <Text color={color}>{postData.author} - </Text>
+              <Date dateString={postData.date} />
+              <Link
+                href={`https://github.com/hades42/vannguyen-dev/blob/main/contents/blogs/${id}.mdx`}
+                target="_blank"
+                color={useColorModeValue('blackAlpha.800', 'orange.200')}
+                fontWeight="bold"
+                paddingLeft="10px"
+              >
+                Edit on Github
+              </Link>
+            </HStack>
           </Box>
-          {isTOC && <TOC />}
-        </Flex>
-      </Layout>
+          <div id="post-body">
+            <MDXProvider components={components}>
+              <article>
+                <MDXRemote {...mdxSource} />
+              </article>
+            </MDXProvider>
+          </div>
+        </Box>
+        {isTOC && <TOC />}
+      </Flex>
     </>
   );
 }

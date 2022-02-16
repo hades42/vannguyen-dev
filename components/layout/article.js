@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { GridItemStyle } from '../grid-item';
 
 const variants = {
@@ -8,19 +7,10 @@ const variants = {
 };
 
 const Layout = ({ children }) => (
-  <motion.article
-    initial="hidden"
-    animate="enter"
-    exit="exit"
-    variants={variants}
-    transition={{ duration: 0.3, type: 'easeInOut' }}
-    style={{ position: 'relative' }}
-  >
-    <>
-      {children}
-      <GridItemStyle></GridItemStyle>
-    </>
-  </motion.article>
+  <>
+    {children}
+    <GridItemStyle></GridItemStyle>
+  </>
 );
 
 export default Layout;

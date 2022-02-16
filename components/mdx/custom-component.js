@@ -3,10 +3,22 @@ import { Reference } from '../paragraph';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import NextImage from 'next/image';
 
-const MyH1 = props => <Heading marginY="18px" as="h1" size="lg" {...props} />;
-const MyH2 = props => <Heading marginY="18px" as="h2" size="md" {...props} />;
-const MyH3 = props => <Heading marginY="18px" as="h3" size="sm" {...props} />;
-const MyH4 = props => <Heading marginY="18px" as="h4" size="xs" {...props} />;
+const MyH1 = props => {
+  const newId = props.children.split(' ').join('-');
+  return <Heading id={newId} marginY="18px" as="h1" size="lg" {...props} />;
+};
+const MyH2 = props => {
+  const newId = props.children.split(' ').join('-');
+  return <Heading id={newId} marginY="18px" as="h2" size="md" {...props} />;
+};
+const MyH3 = props => {
+  const newId = props.children.split(' ').join('-');
+  return <Heading id={newId} marginY="18px" as="h3" size="sm" {...props} />;
+};
+const MyH4 = props => {
+  const newId = props.children.split(' ').join('-');
+  return <Heading id={newId} marginY="18px" as="h4" size="xs" {...props} />;
+};
 
 const MyLink = props => {
   let content = props.children;

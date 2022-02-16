@@ -8,6 +8,8 @@ import codeTheme from '../components/code-block/theme';
 import { DefaultSeo } from 'next-seo';
 import { SEO } from '../components/SEO/SEO';
 import Head from 'next/head';
+import { TocContext } from '../hooks/globalContext';
+import { useState } from 'react';
 
 const CodeTheme = () => {
   return (
@@ -20,6 +22,8 @@ const CodeTheme = () => {
 };
 
 const Website = ({ Component, pageProps, router }) => {
+  const [appearTOC, setAppearTOC] = useState(false);
+
   return (
     <ChakraProvider theme={theme}>
       <Head>
@@ -30,11 +34,13 @@ const Website = ({ Component, pageProps, router }) => {
       </Head>
       <DefaultSeo {...SEO} />
       <CodeTheme />
-      <Main router={router}>
-        <AnimatePresence exitBeforeEnter initial={true}>
-          <Component {...pageProps} key={router.route} />
-        </AnimatePresence>
-      </Main>
+      <TocContext.Provider value={{ appearTOC, setAppearTOC }}>
+        <Main router={router}>
+          <AnimatePresence exitBeforeEnter initial={true}>
+            <Component {...pageProps} key={router.route} />
+          </AnimatePresence>
+        </Main>
+      </TocContext.Provider>
     </ChakraProvider>
   );
 };

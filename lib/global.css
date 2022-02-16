@@ -1,3 +1,22 @@
+/*Support for scrolling*/
+html {
+  scroll-behavior: smooth;
+}
+h2,
+h3 {
+  scroll-margin-top: 150px;
+}
+
+/* Safari-only */
+@supports (-webkit-hyphens: none) {
+  h2,
+  h3 {
+    padding-top: 16px;
+    margin-top: -16px;
+  }
+}
+
+/*scrollbar styling*/
 pre::-webkit-scrollbar {
   width: 5px; /* width of the entire scrollbar */
 }

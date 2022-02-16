@@ -8,6 +8,7 @@ import {
   HStack,
   useColorModeValue,
   Flex,
+  Link,
 } from '@chakra-ui/react';
 import Date from '../../components/Date';
 import { MDXProvider } from '@mdx-js/react';
@@ -97,12 +98,21 @@ function Post({ postData, mdxSource }) {
             paddingRight={isTOC && '40px'}
           >
             <Box marginY="5">
-              <Heading as="h2" size="lg">
+              <Heading as="h2" size="lg" marginBottom="2">
                 {postData.title}
               </Heading>
               <HStack>
-                <Text color={color}>{postData.author}</Text>
+                <Text color={color}>{postData.author} - </Text>
                 <Date dateString={postData.date} />
+                <Link
+                  href={`https://github.com/hades42/vannguyen-dev/blob/main/contents/blogs/${id}.mdx`}
+                  target="_blank"
+                  color={useColorModeValue('blackAlpha.800', 'orange.200')}
+                  fontWeight="bold"
+                  paddingLeft="10px"
+                >
+                  Edit on Github
+                </Link>
               </HStack>
             </Box>
             <div id="post-body">

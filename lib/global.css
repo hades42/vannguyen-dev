@@ -1,7 +1,3 @@
-/*Support for scrolling*/
-html {
-  scroll-behavior: smooth;
-}
 h2,
 h3 {
   scroll-margin-top: 150px;

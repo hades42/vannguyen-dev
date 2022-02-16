@@ -5,6 +5,7 @@ import Layout from '../../components/layout/article';
 import { Paragraph, Reference } from '../../components/paragraph';
 import { siteMetadata } from '../../components/SEO/siteMetadata';
 import { PageSeo } from '../../components/SEO/SEO';
+import { GeneralContainer } from '../../components/GeneralContainer';
 
 const Project = () => {
   const { title } = siteMetadata;

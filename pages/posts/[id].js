@@ -9,6 +9,7 @@ import {
   useColorModeValue,
   Flex,
   Link,
+  Stack,
 } from '@chakra-ui/react';
 import Date from '../../components/Date';
 import { MDXProvider } from '@mdx-js/react';
@@ -27,10 +28,9 @@ import {
 } from '../../components/mdx/custom-component';
 import { BlogSeo } from '../../components/SEO/SEO';
 import { siteMetadata } from '../../components/SEO/siteMetadata';
-import Layout from '../../components/layout/article';
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import TOC from '../../components/mdx/TOC';
-import { TocContext } from '../../hooks/globalContext';
+import { GeneralContainer } from '../../components/GeneralContainer';
 
 const components = {
   pre: CustomCode,
@@ -74,14 +74,7 @@ export async function getStaticProps({ params }) {
 function Post({ postData, mdxSource }) {
   const color = useColorModeValue('gray.900', 'whiteAlpha.700');
   const { date, id, lastmod, summary, title, isTOC } = postData;
-  const { appearTOC, setAppearTOC } = useContext(TocContext);
 
-  useEffect(() => {
-    setAppearTOC(isTOC);
-    return () => {
-      setAppearTOC(false);
-    };
-  });
   return (
     <>
       <BlogSeo
@@ -91,39 +84,43 @@ function Post({ postData, mdxSource }) {
         date={date}
         lastmod={lastmod}
       />
-      <Flex>
-        <Box
-          width={isTOC ? ['100%', '100%', '100%', '75%'] : '100%'}
-          paddingRight={isTOC && '40px'}
-        >
-          <Box marginY="5">
-            <Heading as="h2" size="lg" marginBottom="2">
-              {postData.title}
-            </Heading>
-            <HStack>
-              <Text color={color}>{postData.author} - </Text>
-              <Date dateString={postData.date} />
-              <Link
-                href={`https://github.com/hades42/vannguyen-dev/blob/main/contents/blogs/${id}.mdx`}
-                target="_blank"
-                color={useColorModeValue('blackAlpha.800', 'orange.200')}
-                fontWeight="bold"
-                paddingLeft="10px"
-              >
-                Edit on Github
-              </Link>
-            </HStack>
+      <GeneralContainer isTOC={isTOC}>
+        <Flex>
+          <Box
+            width={isTOC ? ['100%', '100%', '100%', '75%'] : '100%'}
+            paddingRight={isTOC && ['0px', '0px', '0px', '40px']}
+          >
+            <Box marginY="5">
+              <Heading as="h2" size="lg" marginBottom="2">
+                {postData.title}
+              </Heading>
+              <Stack direction={['column', 'row']}>
+                <HStack>
+                  <Text color={color}>{postData.author} - </Text>
+                  <Date dateString={postData.date} />
+                </HStack>
+                <Link
+                  href={`https://github.com/hades42/vannguyen-dev/blob/main/contents/blogs/${id}.mdx`}
+                  target="_blank"
+                  color={useColorModeValue('blackAlpha.800', 'orange.200')}
+                  fontWeight="bold"
+                  paddingLeft={['0px', '10px']}
+                >
+                  Edit on Github
+                </Link>
+              </Stack>
+            </Box>
+            <div id="post-body">
+              <MDXProvider components={components}>
+                <article>
+                  <MDXRemote {...mdxSource} />
+                </article>
+              </MDXProvider>
+            </div>
           </Box>
-          <div id="post-body">
-            <MDXProvider components={components}>
-              <article>
-                <MDXRemote {...mdxSource} />
-              </article>
-            </MDXProvider>
-          </div>
-        </Box>
-        {isTOC && <TOC />}
-      </Flex>
+          {isTOC && <TOC />}
+        </Flex>
+      </GeneralContainer>
     </>
   );
 }

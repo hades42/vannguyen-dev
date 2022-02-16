@@ -13,6 +13,7 @@ import { getSortedPostsData } from '../lib/post';
 import Date from '../components/Date';
 import { PageSeo } from '../components/SEO/SEO';
 import { siteMetadata } from '../components/SEO/siteMetadata';
+import { GeneralContainer } from '../components/GeneralContainer';
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -49,20 +50,22 @@ const Posts = ({ allPostsData }) => {
   const { title, siteUrl } = siteMetadata;
   return (
     <>
-      <PageSeo
-        title={`${title} - Blog Page`}
-        description={`A small digital blog created by Van Nguyen Nguyen. This is where I share my experience as well as some tutorial to develope interesting things - ${siteUrl}`}
-      />
-      <Layout>
-        <Container>
-          <Heading as="h3" fontSize={25} mb={4} mt={6}>
-            Posts
-          </Heading>
-          {allPostsData.map(post => (
-            <SinglePost key={post.id} post={post} />
-          ))}
-        </Container>
-      </Layout>
+      <GeneralContainer>
+        <PageSeo
+          title={`${title} - Blog Page`}
+          description={`A small digital blog created by Van Nguyen Nguyen. This is where I share my experience as well as some tutorial to develope interesting things - ${siteUrl}`}
+        />
+        <Layout>
+          <Container>
+            <Heading as="h3" fontSize={25} mb={4} mt={6}>
+              Posts
+            </Heading>
+            {allPostsData.map(post => (
+              <SinglePost key={post.id} post={post} />
+            ))}
+          </Container>
+        </Layout>
+      </GeneralContainer>
     </>
   );
 };

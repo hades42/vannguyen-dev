@@ -19,6 +19,7 @@ import { ExternalLinkIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link';
 import Layout from '../components/layout/article';
 import { IoLogoGithub, IoLogoLinkedin, IoLogoGoogle } from 'react-icons/io5';
+import { FaDev } from 'react-icons/fa';
 import { useState } from 'react';
 import { PageSeo } from '../components/SEO/SEO';
 import { siteMetadata } from '../components/SEO/siteMetadata';
@@ -178,7 +179,7 @@ const Page = ({ allPostsData }) => {
                   paddingX="2"
                   my="3"
                 >
-                  <Heading as="h3" fontSize="20px">
+                  <Heading as="h3" fontSize="17px">
                     <NextLink href={`/posts/${post.id}`} passHref>
                       <LinkOverlay># {post.title}</LinkOverlay>
                     </NextLink>
@@ -216,6 +217,18 @@ const Page = ({ allPostsData }) => {
                       leftIcon={<Icon as={IoLogoGithub} />}
                     >
                       @hades42
+                    </Button>
+                  </Link>
+                </ListItem>
+
+                <ListItem>
+                  <Link href="https://dev.to/hades42" target="_blank">
+                    <Button
+                      variant="ghost"
+                      color={useColorModeValue('globalBlue', 'orange.200')}
+                      leftIcon={<Icon as={FaDev} />}
+                    >
+                      @Van Nguyen
                     </Button>
                   </Link>
                 </ListItem>

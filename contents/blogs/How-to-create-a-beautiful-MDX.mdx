@@ -5,6 +5,7 @@ lastmod : "2022-02-16"
 summary: "In this post, I will show use how to create a page by using NextJS, MDX with custom tags (from heading, link, img, codeblock,...) in your own style"
 author: "Van Nguyen Nguyen"
 isTOC: true
+onDEV: "https://dev.to/hades42/how-to-create-a-beautiful-page-with-nextjs-mdx-4hh"
 ---
 
 If you are a developer, there is at least one time on your dev journey that you did come across
@@ -455,7 +456,7 @@ is a link, image, heading, codeblock,... So you can get the value from there.
 
 <br/>
 
-To this point, you know how to MDX interact with its custom components by just getting information from the props and passed 
+To this point, you know how MDX interact with its custom components by just getting information from the props and passed 
 it into the new custom components you can skip next explanation.
 
 ### Simple explain MDXProvider
@@ -713,8 +714,7 @@ export default function App({ Component, pageProps }) {
 ```
 
 I hope you get what you want, the color should be as what you are expecting. 
-If there something wrong, please refer to [Prerequisites section](#Prerequisites
-) 
+If there something wrong, please refer to [this repo](https://github.com/hades42/nextjs-blog/tree/main/pages) 
 
 <br/>
 
@@ -929,7 +929,7 @@ to highlight line. Making it look better will be your homework.
 
 ### Making a copy functionality for your codeblock
 
-We gonna utilize a web API called [Clipboard API](https://w3c.github.io/clipboard-api) to accomplish this. 
+We gonna utilize a web API called [Clipboard API](https://w3c.github.io/clipboard-apis) to accomplish this. 
 I am not going to explain the mechanism since the main website does a way better job than me. You can check
 out their explainaion [here](https://w3c.github.io/clipboard-apis/#dom-clipboard-write)
 

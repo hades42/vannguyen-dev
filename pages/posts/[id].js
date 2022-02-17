@@ -10,6 +10,7 @@ import {
   Flex,
   Link,
   Stack,
+  Icon,
 } from '@chakra-ui/react';
 import Date from '../../components/Date';
 import { MDXProvider } from '@mdx-js/react';
@@ -31,6 +32,7 @@ import { siteMetadata } from '../../components/SEO/siteMetadata';
 import React from 'react';
 import TOC from '../../components/mdx/TOC';
 import { GeneralContainer } from '../../components/GeneralContainer';
+import { IoLogoGithub } from 'react-icons/io5';
 
 const components = {
   pre: CustomCode,
@@ -106,7 +108,7 @@ function Post({ postData, mdxSource }) {
                   fontWeight="bold"
                   paddingLeft={['0px', '10px']}
                 >
-                  Edit on Github
+                  <Icon as={IoLogoGithub} /> Edit on Github
                 </Link>
               </Stack>
             </Box>

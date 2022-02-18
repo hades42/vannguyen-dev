@@ -53,7 +53,7 @@ const TOC = () => {
             key={heading.id}
             color={
               activeH === heading.id
-                ? useColorModeValue('gray.900', 'orange.200')
+                ? useColorModeValue('gray.900', '#B8BB26')
                 : 'gray.500'
             }
             fontWeight={activeH === heading.id && 'bold'}

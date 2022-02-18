@@ -33,7 +33,16 @@ const MyH2 = props => {
 };
 const MyH3 = props => {
   const newId = props.children.split(' ').join('-');
-  return <Heading id={newId} marginY="18px" as="h3" size="sm" {...props} />;
+  return (
+    <Heading
+      color={useColorModeValue('blackAlpha.800', '#B8BB26')}
+      id={newId}
+      marginY="18px"
+      as="h3"
+      size="sm"
+      {...props}
+    />
+  );
 };
 const MyH4 = props => {
   const newId = props.children.split(' ').join('-');

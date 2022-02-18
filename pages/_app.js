@@ -10,6 +10,8 @@ import { SEO } from '../components/SEO/SEO';
 import Head from 'next/head';
 import { TocContext } from '../hooks/globalContext';
 import { useState } from 'react';
+import { GAScript } from '../lib/GAnalytics/gtag';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 const CodeTheme = () => {
   return (
@@ -23,6 +25,7 @@ const CodeTheme = () => {
 
 const Website = ({ Component, pageProps, router }) => {
   const [appearTOC, setAppearTOC] = useState(false);
+  useAnalytics();
 
   return (
     <ChakraProvider theme={theme}>
@@ -32,6 +35,7 @@ const Website = ({ Component, pageProps, router }) => {
           content="width=device-width, initial-scale=1"
         ></meta>
       </Head>
+      <GAScript />
       <DefaultSeo {...SEO} />
       <CodeTheme />
       <TocContext.Provider value={{ appearTOC, setAppearTOC }}>

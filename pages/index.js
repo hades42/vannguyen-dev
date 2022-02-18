@@ -178,6 +178,7 @@ const Page = ({ allPostsData }) => {
                   paddingY="3"
                   paddingX="2"
                   my="3"
+                  key={post.id}
                 >
                   <Heading as="h3" fontSize="17px">
                     <NextLink href={`/posts/${post.id}`} passHref>

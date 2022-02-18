@@ -1,34 +1,48 @@
-import {
-  Heading,
-  Text,
-  Image,
-  useColorModeValue,
-  Icon,
-} from '@chakra-ui/react';
+import { Heading, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import { Reference } from '../paragraph';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import NextImage from 'next/image';
-import { HiHashtag } from 'react-icons/hi';
 
 const MyH1 = props => {
   const newId = props.children.split(' ').join('-');
   return (
-    <Heading id={newId} marginY="18px" as="h1" size="lg">
-      <Icon as={HiHashtag} /> {props.children}
+    <Heading
+      color={useColorModeValue('blackAlpha.800', '#B8BB26')}
+      id={newId}
+      marginY="18px"
+      as="h1"
+      size="lg"
+    >
+      {props.children}
     </Heading>
   );
 };
 const MyH2 = props => {
   const newId = props.children.split(' ').join('-');
   return (
-    <Heading id={newId} marginY="18px" as="h2" size="md">
-      <Icon as={HiHashtag} /> {props.children}
+    <Heading
+      color={useColorModeValue('blackAlpha.800', '#B8BB26')}
+      id={newId}
+      marginY="18px"
+      as="h2"
+      size="md"
+    >
+      {props.children}
     </Heading>
   );
 };
 const MyH3 = props => {
   const newId = props.children.split(' ').join('-');
-  return <Heading id={newId} marginY="18px" as="h3" size="sm" {...props} />;
+  return (
+    <Heading
+      color={useColorModeValue('blackAlpha.800', '#B8BB26')}
+      id={newId}
+      marginY="18px"
+      as="h3"
+      size="sm"
+      {...props}
+    />
+  );
 };
 const MyH4 = props => {
   const newId = props.children.split(' ').join('-');

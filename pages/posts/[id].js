@@ -1,4 +1,4 @@
-import { getAllPostIds, getPostData } from '../../lib/post';
+import { getAllPostIds, getPostData, getSortedPostsData } from '../../lib/post';
 import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote } from 'next-mdx-remote';
 import {
@@ -34,6 +34,8 @@ import TOC from '../../components/mdx/TOC';
 import { GeneralContainer } from '../../components/GeneralContainer';
 import { IoLogoGithub } from 'react-icons/io5';
 import { FaDev } from 'react-icons/fa';
+import NavPage from '../../components/NavPage';
+import { Global } from '@emotion/react';
 
 const components = {
   pre: CustomCode,
@@ -58,6 +60,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+  const getAllPaths = getSortedPostsData(true);
+  const currentIndex = getAllPaths.findIndex(pathId => pathId.id === params.id);
+
+  const prev = getAllPaths[currentIndex - 1] || null;
+  const next = getAllPaths[currentIndex + 1] || null;
+
   const postData = await getPostData(params.id);
   const mdxSource = await serialize(postData.content, {
     mdxOptions: {
@@ -66,15 +74,18 @@ export async function getStaticProps({ params }) {
     },
   });
   delete postData.content;
+
   return {
     props: {
       postData,
       mdxSource,
+      prev,
+      next,
     },
   };
 }
 
-function Post({ postData, mdxSource }) {
+function Post({ postData, mdxSource, prev, next }) {
   const color = useColorModeValue('gray.900', 'whiteAlpha.700');
   const { date, id, lastmod, summary, title, isTOC } = postData;
   const devLink = postData.onDEV;
@@ -134,6 +145,7 @@ function Post({ postData, mdxSource }) {
                 </article>
               </MDXProvider>
             </div>
+            <NavPage prev={prev} next={next} />
           </Box>
           {isTOC && <TOC />}
         </Flex>

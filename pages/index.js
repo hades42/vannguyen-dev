@@ -29,7 +29,7 @@ import { getSortedPostsData } from '../lib/post';
 import Date from '../components/Date';
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData().slice(0, 3);
+  const allPostsData = getSortedPostsData(true).slice(0, 3);
   return {
     props: {
       allPostsData,
@@ -177,7 +177,6 @@ const Page = ({ allPostsData }) => {
                   }}
                   paddingY="3"
                   paddingX="2"
-                  my="3"
                   key={post.id}
                 >
                   <Heading as="h3" fontSize="17px">

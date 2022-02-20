@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import { Gi3DGlasses } from 'react-icons/gi';
 import styled from '@emotion/styled';

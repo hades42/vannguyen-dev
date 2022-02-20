@@ -2,6 +2,7 @@ import { Heading, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import { Reference } from '../paragraph';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import NextImage from 'next/image';
+import { Global } from '@emotion/react';
 
 const MyH1 = props => {
   const newId = props.children.split(' ').join('-');
@@ -97,6 +98,7 @@ const TestImage = props => {
   return (
     <div style={{ display: 'block', margin: '30px 0' }}>
       <NextImage
+        className="customImage"
         width={width}
         height={height}
         src={src}
@@ -104,6 +106,13 @@ const TestImage = props => {
         layout="responsive"
         priority
       />
+      <Global
+        styles={`
+        .customImage{
+            border-radius: 10px;
+        }
+        `}
+      ></Global>
       <Text
         as="span"
         marginTop="2"

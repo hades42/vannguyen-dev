@@ -32,17 +32,19 @@ const NavPage = ({ prev, next }) => {
             <div
               style={{
                 color: useColorModeValue(
-                  'var(--chakra-colors-blackAlpha-600',
-                  'var(--chakra-colors-orange-200)'
+                  'var(--chakra-colors-blackAlpha-900',
+                  'var(--chakra-colors-whileAlpha-200)'
                 ),
+                marginBottom: '5px',
               }}
             >
               <Icon as={ArrowBackIcon} /> Previous Post
             </div>
             <NextLink href={`/posts/${prev.id}`}>
               <LinkOverlay
+                color={useColorModeValue('blackAlpha.700', 'orange.200')}
                 _hover={{
-                  color: '#467df2',
+                  color: useColorModeValue('black', 'white'),
                 }}
               >
                 {prev.title}
@@ -70,17 +72,19 @@ const NavPage = ({ prev, next }) => {
             <div
               style={{
                 color: useColorModeValue(
-                  'var(--chakra-colors-blackAlpha-600',
-                  'var(--chakra-colors-orange-200)'
+                  'var(--chakra-colors-blackAlpha-900',
+                  'var(--chakra-colors-whileAlpha-200)'
                 ),
+                marginBottom: '5px',
               }}
             >
               Next Post <Icon as={ArrowForwardIcon} />
             </div>
             <NextLink href={`/posts/${next.id}`}>
               <LinkOverlay
+                color={useColorModeValue('blackAlpha.700', 'orange.200')}
                 _hover={{
-                  color: '#467df2',
+                  color: useColorModeValue('black', 'white'),
                 }}
               >
                 {next.title}

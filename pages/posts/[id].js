@@ -146,7 +146,7 @@ function Post({ postData, mdxSource, prev, next }) {
             </div>
             <NavPage prev={prev} next={next} />
           </Box>
-          {isTOC && <TOC />}
+          {isTOC && <TOC routeID={postData.id} />}
         </Flex>
       </GeneralContainer>
     </>

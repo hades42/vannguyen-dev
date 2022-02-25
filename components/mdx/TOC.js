@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import styles from './TOCstyle.module.css';
 import useIntersectionObserve from '../../hooks/useIntersect';
 
-const TOC = () => {
+const TOC = routeID => {
   const [activeH, setActiveH] = useState();
   const [headings, setHeadings] = useState([]);
 
@@ -17,7 +17,7 @@ const TOC = () => {
     const content = document.getElementById('post-body');
     const headingElements = Array.from(content.querySelectorAll('h1,h2,h3,h4'));
     setHeadings(headingElements);
-  }, []);
+  }, [routeID]);
 
   const getLevel = heading => {
     if (heading) {
@@ -25,7 +25,9 @@ const TOC = () => {
     }
   };
 
-  useIntersectionObserve(setActiveH);
+  useIntersectionObserve(setActiveH, routeID);
+
+  console.log(activeH);
   return (
     <nav
       style={{

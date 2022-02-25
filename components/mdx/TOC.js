@@ -11,12 +11,12 @@ import useIntersectionObserve from '../../hooks/useIntersect';
 
 const TOC = () => {
   const [activeH, setActiveH] = useState();
-  const [headings, setheadings] = useState([]);
+  const [headings, setHeadings] = useState([]);
 
   useEffect(() => {
     const content = document.getElementById('post-body');
     const headingElements = Array.from(content.querySelectorAll('h1,h2,h3,h4'));
-    setheadings(headingElements);
+    setHeadings(headingElements);
   }, []);
 
   const getLevel = heading => {

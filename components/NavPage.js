@@ -40,7 +40,7 @@ const NavPage = ({ prev, next }) => {
             >
               <Icon as={ArrowBackIcon} /> Previous Post
             </div>
-            <NextLink href={`/posts/${prev.id}`}>
+            <NextLink href={`/posts/${prev.id}`} passHref>
               <LinkOverlay
                 color={useColorModeValue('blackAlpha.700', 'orange.200')}
                 _hover={{
@@ -80,7 +80,7 @@ const NavPage = ({ prev, next }) => {
             >
               Next Post <Icon as={ArrowForwardIcon} />
             </div>
-            <NextLink href={`/posts/${next.id}`}>
+            <NextLink href={`/posts/${next.id}`} passHref>
               <LinkOverlay
                 color={useColorModeValue('blackAlpha.700', 'orange.200')}
                 _hover={{

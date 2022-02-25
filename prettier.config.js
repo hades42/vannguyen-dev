@@ -5,6 +5,6 @@ const options = {
   endOfLine: 'lf',
   semi: true,
   tabWidth: 2,
-}
+};
 
-module.exports = options
+module.exports = options;

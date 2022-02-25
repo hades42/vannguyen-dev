@@ -1,4 +1,4 @@
-import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Heading, SimpleGrid } from '@chakra-ui/react';
 import Section from '../components/section';
 import { ProjectGridItem } from '../components/grid-item';
 import shopThumbNail from '../public/images/shopology-front.png';

@@ -1,0 +1,308 @@
+---
+title: "A Beginner guide to make a NodeJS CLI to convert medium posts into markdown format"
+date: "2022-02-24"
+lastmod: "2022-02-24"
+summary: "This is just a beginner guide on how I make a fun CLI to automate some boring stuffs on Internet"
+author: "Van Nguyen Nguyen"
+isTOC: true 
+onDEV: ""
+---
+
+<TestImage width="300" height="150" alt="This is a preview of what we are going to make" src="/images/how-make-a-cli-coverting-medium/cover.gif"/>
+
+For someone who just read my blog by accident, I'm using a note-taking app called [Joplin](https://github.com/laurent22/joplin) to take note which requires me 
+to write every thing in markdown format and I get used to that. So one day I feel bored and came up with an idea that turning Medium posts (of course
+not include premium post) into a markdown format since Medium a big platform for blogger and it is going to be easier for me to take note since now I just
+put every thing into Joplin.
+
+
+---
+
+# Prerequisites
+
+If you have not done any NodeJS CLI before, there is a really good [tutorial](https://www.youtube.com/watch?v=s2h28p4s-Xs) on Internet from Twilio. Please
+watch the first 5min, it is not that long and highly recommend watching the whole video and try out some stuff.
+<br></br>
+There is some package that we need to install:
+
+* [esm](https://www.npmjs.com/package/esm) This is a **requirement** package since it will help to support ESM feature like dynamic import
+* [node-fetch](https://www.npmjs.com/package/node-fetch) This is a **requirement** package since it will allow to use Fetch API
+* [turndown](https://www.npmjs.com/package/turndown) This is a **requirement** package since it will allow us to translate markup into markdown
+
+```markdown
+<h1>The title</h1> --> # The title
+```
+* [ora](https://www.npmjs.com/package/ora) This is **optional** package since it just create some spinner animation when we fetch the API.
+
+# Big Problem
+
+There are multiple approach to get this project done. One of the is doing Web Scrapping to get the main content of the website since this is just a beginner guide, so
+I will make the Web scrapping method in another post.   
+
+<br/>
+
+The other method is using [Medium API](https://github.com/Medium/medium-api-docs) to get the content. Unfortunately, the Medium does not provide the content of the 
+post. But they do publish one thing that we can take advantage of, which is their [RSS feeds](https://help.medium.com/hc/en-us/articles/214874118-RSS-feeds) (there is
+also a big drawback from using RSS feeds, which is that Medium only provide that latest 10 posts for us).
+
+<br/>
+
+Then using an API called [rss2json](https://rss2json.com/#rss_url=https%3A%2F%2Fnews.ycombinator.com%2Frss) to help convert RSS format into JSON format so it is going
+to be way easier to work with.
+
+# The main logic
+
+```
+First we want to get the URL from args
+-> then we get the proper link from the URL to construct RSS URL https://medium.com/feed/<User name>.
+--> Fetching the Feed and give the Feed to rss2json API.
+---> Getting the JSON data from the rss2json (Now you can do whatever your want since JSON data is really easy to work with). 
+----> Using 'turndown' to convert the main content into makrdown format.
+-----> Put the data some where.
+```
+
+# Let's code
+
+Let's call the project **m2m** (which stands for medium to markdown)
+
+<br/>
+
+If you follow the [Prerequisites](#Prerequisites), make sure to watch Twilio tutorial as well as install the necessary packages.
+
+<br/>
+
+There are some files that are important for initial setup
+
+```JSON file=package.json
+{
+    "name": "<Put your name here>/m2m",
+    "version": "1.0.0",
+    "description": "A CLI to translate medium post into markdown format",
+    "main": "src/cli.js",
+    // The "bin" will define how the script gonna be called
+    "bin": {
+        "<Put your name her >/m2m": "bin/m2m",
+        "m2m": "bin/m2m"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "cli",
+        "m2m"
+    ],
+    "author": "Van Nguyen Nguye",
+    "license": "ISC",
+    "dependencies": {
+        "esm": "^3.2.25",
+        "node-fetch": "^2.6.7",
+        "ora": "^5.4.1",
+        "turndown": "^7.1.1"
+    }
+}
+```
+
+```javascript file=bin/m2m
+#!/usr/bin/env node
+// The first line starting with #! is called a shebang which is used to specify the absolute path to the interpreter
+// that will run the code below
+require = require("esm")(module /* , options */);
+require("../src/cli.js").cli(process.argv);
+```
+
+```javascript file=src/cli.js
+export function cli(args) {
+    // by default when you type "m2m" there are 2 thing gonna be return from args
+    // First arg is Node in your computer
+    // Second is the entry point of your code (which is bin/m2m)
+    // And the rest is every thing you type in
+    console.log(args);
+}
+```
+
+Do not forget to run `npm link` to create a symlink to our code. More on [npm link](https://docs.npmjs.com/cli/v8/commands/npm-link)
+
+## First step: construct the RSS URL and Get JSON data
+
+There is one thing that we have to worry about:
+* https://blog.craftz.dog/what-i-accomplished-in-2021-my-challenge-for-2022-dc8b025f0132
+* https://medium.com/odoruinu/what-i-accomplished-in-2021-my-challenge-for-2022-dc8b025f0132
+
+Both links above are the same content from the same person but, the link is totally different? Why is that? Turn out
+Medium allow you to create a seperate blog (like for a community or a company, organisation,...). So there will be 2 different RSS links respectively:
+
+* https://blog.craftz.dog/feed
+* https://medium.com/feed/odoruinu
+
+```javascript file=src/cli.js
+export function cli(args) {
+    // We get the URL
+    const myArgs = args.slice(2);
+    // This will container the ID of the pager(this is the title of the page)
+    let mainID;
+
+    // Split every thing by the '/'
+    const processedURL = (URL) => {
+        return URL.split("/");
+    };
+
+    const fetchURL = async (URL) => {
+        const currURL = processedURL(URL);
+        // Check to see whether the link is a personal blog and community blog
+        const found = currURL.findIndex((el) => el === "medium.com");
+        // Create appropriate RSS feed link
+
+        let feedURL =
+            found > -1
+                ? `${currURL[0]}//${currURL[2]}/feed/${currURL[3]}`
+                : `${currURL[0]}//${currURL[2]}/feed`;
+
+        // Assign the mainID of the post
+        mainID = found > -1 ? currURL[4] : currURL[3];
+
+        // After having RSS feed, using rss2json to fetch for JSON data
+        const getJSONFormat = await fetch(
+            `https://api.rss2json.com/v1/api.json?rss_url=${feedURL}`
+        );
+
+        // Parse to JSON and return it
+        const text = await getJSONFormat.text();
+        const json = JSON.parse(text);
+        return json;
+    };
+}
+```
+
+## Second Step: Turn every thing into Markdown
+
+Highly recommend you to take one of the RSS feed I provided above and put to [rss2json](https://rss2json.com/#rss_url=https%3A%2F%2Fnews.ycombinator.com%2Frss)
+to see what is the structure of data we get back from the API. 
+
+<br/>
+
+Currently, it is going to be similar to this structure
+
+```API-structure
+{
+    // we can ignore these attributes
+    "status": "..."
+    "feed": {
+        ...
+    }
+
+    // This is what we want, the "items" attribute will be an array of object that represent the information of each post
+    // We basically want to take out the "items" value
+    "items": [
+        // This is one post
+        {
+            "title": "...",
+            "pubDate": "...",
+            "link": "..."
+            "author": "..."
+            ...
+        },
+        // And other posts
+        ...
+    ]
+}
+```
+
+```javascript file=src/cli.js 
+// Async function becasue we did fetch data from function above
+    const convertToMD = async () => {
+        // Fetch the JSON content 
+        const feed = await fetchURL(myArgs[0]);
+        let mainContent;
+        let flag = false;
+
+        // We checking for every post in the RSS feed, whether there is any ID similar to the URL we need
+        for (const item of feed.items) {
+            // Since the URL in RSS has some query in the link, we need to remove those to get the actual ID
+            const processLink = processedURL(item.link.split("?")[0]);
+            for (const li of processLink) {
+                // Find the matching ID
+                if (li === mainID) {
+                    mainContent = item;
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        
+        // Return a new Promise
+        return new Promise((resolve, rejects) => {
+            // If we could not find anything, that's probably a premium post or the post from long time ago (I mentioned in Big Problem section)
+            if (!flag) {
+                rejects("This is a preimum post!");
+            } else {
+                // If there is a match
+                const turndownService = new TurndownService();
+                // Convert the whole HTML content into markdown by using turndown
+                const markdownContent = turndownService.turndown(
+                    mainContent.content
+                );
+                // Create frontmatter
+                const frontmatter = `
+---
+firstPublishedAt: ${mainContent.pubDate}
+slug: ${mainContent.link}
+thumbnail: ${mainContent.thumbnail}
+author: ${mainContent.author} 
+title: ${mainContent.title}
+tags: [${mainContent.categories}]
+---\n\n`;
+                // Merge them together
+                resolve(frontmatter + markdownContent);
+            }
+        });
+    };
+```
+
+## Final Step: Find somewhere to put the content
+The final step is an entry point to bring everything together
+
+```javascript file=src/cli.js
+    // The main function is also the entry point of our CLI
+    const main = async () => {
+        // If we have more than 2 arg or only m2m, we gonna print the usuage of our CLI 
+        if (myArgs.length < 1 || myArgs.length > 2) {
+            console.log("Usage: m2m <Medium_URL>");
+            process.exit(1);
+        }
+        // Create a spinner with ora
+        const spinners = ora("Converting File\n").start();
+        // Since we return a promise, if the promise get reject, we will just print the error
+        const content = await convertToMD().catch((error) => {
+            spinners.fail(error);
+            exit(1);
+        });
+        // If the promise get resolve, we will create a /posts to container all the file
+        const currDir = process.cwd() + "/posts";
+
+        //Create a /posts folder at current Dir
+        try {
+            if (!fs.existsSync(currDir)) {
+                fs.mkdirSync(currDir);
+            }
+        } catch (error) {
+            spinners.fail(error);
+        }
+
+        // write to the file
+        const fileName = mainID + ".md";
+        fs.writeFileSync(`${currDir}/${fileName}`, content, (err) => {
+            spinners.fail(err);
+        });
+
+        spinners.succeed("Successfully create .md file");
+    };
+
+    // Run the main function of our CLI
+    main();
+```
+
+I hope you achive what you are looking for. If you have any problem, please refer to my [example repo](https://github.com/hades42/m2m)
+for more information.

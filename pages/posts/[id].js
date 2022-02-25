@@ -35,7 +35,6 @@ import { GeneralContainer } from '../../components/GeneralContainer';
 import { IoLogoGithub } from 'react-icons/io5';
 import { FaDev } from 'react-icons/fa';
 import NavPage from '../../components/NavPage';
-import { Global } from '@emotion/react';
 
 const components = {
   pre: CustomCode,
@@ -147,7 +146,7 @@ function Post({ postData, mdxSource, prev, next }) {
             </div>
             <NavPage prev={prev} next={next} />
           </Box>
-          {isTOC && <TOC />}
+          {isTOC && <TOC routeID={postData.id} />}
         </Flex>
       </GeneralContainer>
     </>

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-const useIntersectionObserve = setActiveH => {
+const useIntersectionObserve = (setActiveH, routeID) => {
   const headingElementsRef = useRef({});
+
   useEffect(() => {
     const callback = headings => {
       headingElementsRef.current = headings.reduce((map, headingElement) => {
@@ -33,8 +34,9 @@ const useIntersectionObserve = setActiveH => {
 
     return () => {
       observer.disconnect();
+      headingElementsRef.current = {};
     };
-  }, [setActiveH]);
+  }, [setActiveH, routeID]);
 };
 
 export default useIntersectionObserve;
